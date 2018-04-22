@@ -10,7 +10,7 @@ import users.CommandEnum;
 public class Main {
 	//constants for user messages
 	public static final String INVALID = "Opcao inexistente";
-	public static final String EXIT = "Ate a proxima.";
+	public static final String EXIT = "Ate a proxima";
 	
 	//auxiliary methods
 	/**
@@ -37,7 +37,7 @@ public class Main {
 	private static void commandInterpreter() {
 		Scanner in = new Scanner(System.in);
 		
-		System.out.print("->");
+		System.out.print("> ");
 		CommandEnum comm = Main.getCommand(in);
 		
 		while(!comm.equals(CommandEnum.QUIT)) {
@@ -84,11 +84,13 @@ public class Main {
 				case HELP: 
 					help();
 					break;
-				default:
+				case UNKNOWN:
 					System.out.println(INVALID);
 					break;
+				default:	//does nothing
+					break;
 			}
-			System.out.print("->");
+			System.out.print("> ");
 			comm = Main.getCommand(in);
 		} 
 		
