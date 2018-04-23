@@ -9,21 +9,21 @@ public enum CommandEnum {
 	/**
 	 * Enumeration constants and its values.
 	 */
-	REGISTER 		("REGISTA", 	"regista - regista um novo colaborador"),
-	STAFF 			("STAFF", 		"staff - lista os colaboradores"),
-	SET 			("CENARIO", 	"cenario - regista um novo local para gravacoes"),
-	SETS 			("CENARIOS",	"cenarios - lista os locais para gravacoes registados"),
-	SCHEDULE		("MARCA", 		"marca - marca uma nova gravacao"),
-	GRUMPY 			("AMUA", 		"amua - vedeta deixa de trabalhar com colaborador"),
-	RECONCILE 		("RECONCILIA",	"reconcilia - vedeta faz as pazes com colaborador"),
-	PERFORMED 		("REALIZADAS", 	"realizadas - lista as gravacoes realizadas"), 
-	PLANNED			("PREVISTAS", 	"previstas - lista as gravacoes previstas"), 
-	PLACES			("LOCAL", 		"local - lista as gravacoes previstas para um local"),
-	COLABORATOR 	("COLABORADOR", "colaborador - lista as gravacoes previstas para um colaborador"),
-	RECORD			("GRAVA", 		"grava - executa a proxima gravacao agendada"),
-	GRUMPIES 		("AMUANCOS", 	"amuancos - lista os colaboradores com quem uma vedeta esta amuada"), 
-	HELP 			("AJUDA", 		"ajuda- Mostra a ajuda"), 
-	QUIT 			("SAI", 		"sai - Termina a execucao do programa"),
+	REGISTER 		("REGISTA", 	"regista - regista um novo colaborador\n"),
+	STAFF 			("STAFF", 		"staff - lista os colaboradores registados\n"),
+	SET 			("CENARIO", 	"cenario - regista um novo local para gravacoes\n"),
+	SETS 			("CENARIOS",	"cenarios - lista os locais para gravacoes registados\n"),
+	SCHEDULE		("MARCA", 		"marca - marca uma nova gravacao\n"),
+	GRUMPY 			("AMUA", 		"amua - vedeta deixa de trabalhar com colaborador\n"),
+	RECONCILE 		("RECONCILIA",	"reconcilia - vedeta faz as pazes com colaborador\n"),
+	PERFORMED 		("REALIZADAS", 	"realizadas - lista as gravacoes realizadas\n"), 
+	PLANNED			("PREVISTAS", 	"previstas - lista as gravacoes previstas\n"), 
+	PLACES			("LOCAL", 		"local - lista as gravacoes previstas para um local\n"),
+	COLABORATOR 	("COLABORADOR", "colaborador - lista as gravacoes previstas para um colaborador\n"),
+	RECORD			("GRAVA", 		"grava - executa a proxima gravacao agendada\n"),
+	GRUMPIES 		("AMUANCOS", 	"amuancos - lista os colaboradores com quem uma vedeta esta amuada\n"), 
+	HELP 			("AJUDA", 		"ajuda - Mostra a ajuda\n"), 
+	QUIT 			("SAI", 		"sai - Termina a execucao do programa\n"),
 	UNKNOWN 		("",			"");
 	
 	/**
