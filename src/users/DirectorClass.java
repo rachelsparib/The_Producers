@@ -1,5 +1,5 @@
 package users;
 
-public class DirectorClass extends UserClass{
+public class DirectorClass extends UserClass implements Director{
 
 }

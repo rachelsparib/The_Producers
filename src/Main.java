@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-import users.CommandEnum;
+import enums.CommandEnum;
 
 /**
  * Main program for demonstrating the management of audiovisual productions.

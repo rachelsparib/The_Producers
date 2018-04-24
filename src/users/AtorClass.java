@@ -1,5 +1,5 @@
 package users;
 
-public class AtorClass extends UserClass {
+public class AtorClass extends UserClass implements Ator {
 
 }

@@ -1,4 +1,4 @@
-package users;
+package enums;
 
 /**
  * An enumeration type for main program commands.
