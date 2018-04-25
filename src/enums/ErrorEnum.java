@@ -19,21 +19,21 @@ public enum ErrorEnum {
 	
 	
 	/**
-	 * Stores the command description for each constant.
+	 * Stores the error description for each constant.
 	 */
 	private String description;
 	
 	/**
 	 * Creates an object of the enumeration type.
-	 * @param description - command description.
+	 * @param description - error description.
 	 */
 	private ErrorEnum(String description){
 		this.description = description;
 	}
 	
 	/**
-	 * Returns the command description.
-	 * @return command description.
+	 * Returns the error description.
+	 * @return error description.
 	 */
 	public String toString() {
 		return description;
