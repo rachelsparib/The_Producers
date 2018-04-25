@@ -1,22 +1,28 @@
 package array;
 
+/**
+ * @author Antonio Santos 49055 / Raquel Pena 45081.
+ * 
+ * A generic iterator, which will be used to traverse elements stored in array structures.
+ * @param <E> - a generic type.
+ * 
+ */
 public interface Iterator<E> {
 	/**
-	 * Inicializa o iterador.
+	 * Initializes the iterator.
 	 */
 	void init();
 
 	/**
-	 * Verifica se existem mais elementos a iterar.
-	 * @return <code>true</code> se houver mais elementos a iterar, 
-	 * ou <code>false</code> caso contrario.
+	 * Verifies if there are more elements to iterate.
+	 * @return <code>true</code> if there are more elements to iterate or <code>false</code> otherwise.
 	 */
 	boolean hasNext();
 
 	/**
-	 * Devolve o proximo elemento a iterar, avancando com o iterador.
+	 * Returns the next element to iterate, advancing with the iterator.
 	 * @pre hasNext()
-	 * @return o proximo elemento.
+	 * @return the next element.
 	 */
 	E next();
 }

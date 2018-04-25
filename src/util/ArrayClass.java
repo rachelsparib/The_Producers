@@ -1,20 +1,32 @@
-package util;
+package array;
 
+/**
+ * 
+ * @author Antonio Santos 49055 / Raquel Pena 45081.
+ *	
+ * An implementation of a generic array, which will be used to create array structures to store information of certain entities.
+ *
+ * @param <E> a generic type.
+ */
 public class ArrayClass<E> implements Array<E> {
+	
+	/**
+	 * Default size of the array.
+	 */
 	private static final int DEFAULT_SIZE = 50;
 
 	/**
-	 * O array generico
+	 * The generic array.
 	 */
 	private E [] array;
 	
 	/**
-	 * O numero de elementos actual
+	 * The actual number of elements.
 	 */
 	private int counter;
 
 	/**
-	 * Construtor que define um array com dimensao inicial de 50
+	 * Constructor that defines an array with the default size.
 	 */
 	@SuppressWarnings("unchecked")
 	public ArrayClass() {
@@ -24,8 +36,8 @@ public class ArrayClass<E> implements Array<E> {
 	
 	
 	/**
-	 * Construtor que define um array com dimensao inicial de <code>capacity</code>
-	 * @param capacity dimensao inicial do array
+	 * Constructor that defines an array with the inicial size of <code>capacity</code>
+	 * @param capacity inicial size of the array.
 	 * @pre capacity > 0
 	 */
 	@SuppressWarnings("unchecked")
@@ -36,7 +48,7 @@ public class ArrayClass<E> implements Array<E> {
 
 	@Override
 	public void insertLast(E elem) {
-		if (counter == array.length)  // se necessario, aumentar vector
+		if (counter == array.length) 
 			resize();
 		array[counter++] = elem;
 	}
@@ -85,7 +97,7 @@ public class ArrayClass<E> implements Array<E> {
 		boolean found = false;
 		int i=0;
 		while(i < counter && !found)
-			if(array[i].equals(elem)) 
+			if(array[i].equals(elem)) //uses references
 				found = true;
 			else i++;
 		if (found) return i;
@@ -103,7 +115,7 @@ public class ArrayClass<E> implements Array<E> {
 	}
 
 	/**
-	 * Metodo auxiliar para duplicar o tamanho do vector. 
+	 * Auxiliary method to double the size of the array. 
 	 */
 	@SuppressWarnings("unchecked")
 	private void resize() {
@@ -112,4 +124,5 @@ public class ArrayClass<E> implements Array<E> {
 			tmp[i] = array[i];
 		array = tmp;
 	}
+	
 }
