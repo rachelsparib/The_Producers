@@ -5,7 +5,7 @@ public enum ErrorEnum {
 	 * Enumeration constants and its values.
 	 */
 	UNKNOWN_LOCAL 				("Local desconhecido.\n"),
-	INVALID_DATA 				("Data de gravacao invalida.\n"),
+	INVALID_DATE 				("Data de gravacao invalida.\n"),
 	INVALID_DURATION 			("Duracao invalida.\n"),
 	UNKNOWN_PRODUCER			("Produtor desconhecido.\n"),
 	UNKNOWN_DIRECTOR			("Realizdor desconhecido.\n"),
