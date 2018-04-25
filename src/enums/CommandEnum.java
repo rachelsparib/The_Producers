@@ -19,7 +19,7 @@ public enum CommandEnum {
 	PERFORMED 		("REALIZADAS", 	"realizadas - lista as gravacoes realizadas\n"), 
 	PLANNED			("PREVISTAS", 	"previstas - lista as gravacoes previstas\n"), 
 	PLACES			("LOCAL", 		"local - lista as gravacoes previstas para um local\n"),
-	COLABORATOR 	("COLABORADOR", "colaborador - lista as gravacoes previstas para um colaborador\n"),
+	COLLABORATOR 		("COLABORADOR", "colaborador - lista as gravacoes previstas para um colaborador\n"),
 	RECORD			("GRAVA", 		"grava - executa a proxima gravacao agendada\n"),
 	GRUMPIES 		("AMUANCOS", 	"amuancos - lista os colaboradores com quem uma vedeta esta amuada\n"), 
 	HELP 			("AJUDA", 		"ajuda - Mostra a ajuda\n"), 
