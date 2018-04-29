@@ -77,18 +77,14 @@ public interface Production {
 	 */
 	boolean isBeforeLast(LocalDateTime start);
 	
-	
-	//boolean hasRecording();//TODO
-	
 	/**
-	 * Returns iterator for the collection of recordings that iterates on recordings with status <code>status</code>.
-	 * @param status
-	 * @return
+	 * Returns a collection of recordings with status <code>status</code>.
+	 * @param status status of the recording.
+	 * @return collection of recordings with  status <code>status</code>.
 	 */
-	Iterator<Recording> listRecordings(RecordingStatusEnum status);
+	public Array<Recording> recordingsByStatus(RecordingStatusEnum status);
 	
-	
-	
+	boolean belongsToBlackList(String username, String starname);
 //	public Local getLocal();
 //	
 //	public LocalDateTime getDate();

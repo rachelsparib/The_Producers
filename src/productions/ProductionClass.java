@@ -138,10 +138,15 @@ public class ProductionClass implements Production {
 	}
 
 	@Override
-	public Iterator<Recording> listRecordings(RecordingStatusEnum status) {		
-		Iterator<Recording> iterator = new IteratorRecordingByStatus<Recording>(status, recordings);	//TODO implement iterator with filter
-		//or implements here with a normal iterator
-		return iterator;
+	public Array<Recording> recordingsByStatus(RecordingStatusEnum status) {
+		Iterator<Recording> it = recordings.iterator();	
+		Array<Recording> recfiltered = new ArrayClass<Recording>(DEFAULT_SIZE);
+		while(it.hasNext()) {
+			Recording rec = it.next();
+			if(rec.getStatus().equals(status))
+				recfiltered.insertLast(rec);
+		}
+		return recfiltered;
 	}
 
 
