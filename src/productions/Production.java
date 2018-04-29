@@ -3,6 +3,7 @@ package productions;
 import enums.*;
 import users.User;
 import util.*;
+import recordings.Local;
 
 
 /**
@@ -41,8 +42,20 @@ public interface Production {
 	 * @param localcost hourly cost of the local.
 	 * @pre !hasLocal(localname)
 	 */
-	void addSet(String localname, int localcost);
+	void addLocal(String localname, int localcost);
 	
+	/**
+	 * Checks if a local with name <code>localname</code> already exists for recordings. 
+	 * @param localname name of the local.
+	 * @return <code>true</code> if a local with name <code>localname</code> already exists or <code>false</code> otherwise.
+	 */
+	boolean hasLocal(String localname);
+	
+	/**
+	 * Returns iterator for the collection of locals.
+	 * @return iterator of locals.
+	 */
+	Iterator<Local> listLocals();
 	
 //	public Local getLocal();
 //	

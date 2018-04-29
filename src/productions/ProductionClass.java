@@ -2,6 +2,7 @@ package productions;
 import enums.*;
 import users.*;
 import util.*;
+import recordings.*;
 
 public class ProductionClass implements Production {
 	/**
@@ -14,9 +15,12 @@ public class ProductionClass implements Production {
 	 */
 	private Array<User> users;
 	
+	private Array<Local> locals;
+	
 	
 	public ProductionClass() {
-		users = new ArrayClass<User>(DEFAULT_SIZE);
+		users = new ArrayClass<User>(DEFAULT_SIZE);		// size 100
+		locals = new ArrayClass<Local>();			// size 50
 	}
 	
 	
@@ -71,5 +75,31 @@ public class ProductionClass implements Production {
 	public Iterator<User> listUsers() {
 		return users.iterator();
 	}
+
+
+	@Override
+	public void addLocal(String localname, int localcost) {
+		Local l = new LocalClass(localname, localcost);
+		locals.insertLast(l);
+	}
+
+
+	@Override
+	public boolean hasLocal(String localname) {
+		Iterator<Local> it = locals.iterator();
+		while(it.hasNext()) {
+			Local l = it.next();
+			if(l.getName().equals(localname))
+				return true;
+		}
+		return false;
+	}
+
+
+	@Override
+	public Iterator<Local> listLocals() {
+		return locals.iterator();
+	}
+	
 	
 }
