@@ -1,10 +1,10 @@
-package array;
+package util;
 
 /**
  * @author Antonio Santos 49055 / Raquel Pena 45081.
  * 
  * An implementation of a generic iterator, which will be used to traverse elements stored in array structures.
- * @param <E> - a generic type.
+ * @param <E> a generic type.
  * 
  */
 public class IteratorClass<E> implements Iterator<E> {
@@ -23,7 +23,11 @@ public class IteratorClass<E> implements Iterator<E> {
 	 */
 	private int current;
 	
-	
+	/**
+	 * Creates an iterator to a certain array.
+	 * @param vector array to be traversed.
+	 * @param counter number of elements in the array.
+	 */
 	public IteratorClass(E[] vector, int counter) {
 		this.vector = vector;
 		this.counter = counter;
