@@ -1,4 +1,4 @@
-package enums;
+	package enums;
 
 /**
  * An enumeration type for user messages.
@@ -12,9 +12,10 @@ public enum MessagesEnum {
 	INVALID_OPTION				("Opcao inexistente"),
 	REGISTER_SUCCESS 			("Colaborador registado com sucesso!"),
 	INVALID_USERNAME			("Ja existe um colaborador com o mesmo nome."),
-	UNKNOWN_USER				("Tipo de colaborador desconhecido"),
-	UNKNOWN_STARTYPE			("Notoriedade invalida"),
+	INVALID_USERTYPE			("Tipo de colaborador desconhecido"),
+	INVALID_STARTYPE			("Notoriedade invalida"),
 	INVALID_HOURRATE			("Acha mesmo que este colaborador vai pagar para trabalhar?"),
+	USERLIST_EMPTY				("Nao existem colaboradores registados."),
 	
 	UNKNOWN_LOCAL 				("Local desconhecido.\n"),
 	INVALID_DATE 				("Data de gravacao invalida.\n"),
@@ -28,9 +29,7 @@ public enum MessagesEnum {
 	IMPENDING_RECORD_CHANGES	("Gravacao prioritaria agendada provocou mudancas noutra(s) gravacao(oes).\n"),
 	EXIT 						("Ate a proxima"),
 	OK							("");
-	
-	
-	
+		
 	/**
 	 * Stores the  description for each constant.
 	 */
@@ -38,15 +37,15 @@ public enum MessagesEnum {
 	
 	/**
 	 * Creates an object of the enumeration type.
-	 * @param description - message description.
+	 * @param description message's description.
 	 */
 	private MessagesEnum(String description){
 		this.description = description;
 	}
 	
 	/**
-	 * Returns the error description.
-	 * @return error description.
+	 * Returns the message's description.
+	 * @return message's description.
 	 */
 	public String toString() {
 		return description;
