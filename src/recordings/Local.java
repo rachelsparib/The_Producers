@@ -4,7 +4,6 @@ package recordings;
  * A local of a recording.
  * 
  * @author Antonio Santos 49055 / Raquel Pena 45081.
- *	
  *
  */
 public interface Local {
@@ -19,4 +18,10 @@ public interface Local {
 	 * @return hourly cost.
 	 */
 	int getCost();
+	
+	/**
+	 * Returns information of the local.
+	 * @return information of the local.
+	 */
+	String toString();
 }

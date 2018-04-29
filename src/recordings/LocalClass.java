@@ -37,5 +37,9 @@ public class LocalClass implements Local {
 	public int getCost() {
 		return cost;
 	}
-
+	
+	@Override
+	public String toString() {
+		return getName() + " " + getCost() + ".";
+	}
 }
