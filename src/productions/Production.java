@@ -1,9 +1,12 @@
 package productions;
 
+import java.time.LocalDateTime;
+
 import enums.*;
 import users.User;
 import util.*;
 import recordings.Local;
+import recordings.Recording;
 
 
 /**
@@ -56,6 +59,35 @@ public interface Production {
 	 * @return iterator of locals.
 	 */
 	Iterator<Local> listLocals();
+	
+	/**
+	 * Adds a new recording to the schedule.
+	 * @param users collaborators participating in the recording.
+	 * @param start initial date and time of the recording. 
+	 * @param duration recording's duration.
+	 * @pre !hasRecording
+	 */
+	void addRecording(Array<User> users, LocalDateTime start, int duration);
+	
+	/**
+	 * Checks if a recording initial date if before the last scheduled recording.
+	 * @param start initial date of the recording.
+	 * @return <code>true</code> if a recording with initial date <code>date</code> is before
+	 * 			the last one	 scheduled or <code>false</code> otherwise.
+	 */
+	boolean isBeforeLast(LocalDateTime start);
+	
+	
+	//boolean hasRecording();//TODO
+	
+	/**
+	 * Returns iterator for the collection of recordings that iterates on recordings with status <code>status</code>.
+	 * @param status
+	 * @return
+	 */
+	Iterator<Recording> listRecordings(RecordingStatusEnum status);
+	
+	
 	
 //	public Local getLocal();
 //	
