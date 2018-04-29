@@ -3,6 +3,7 @@ import enums.*;
 import productions.*;
 import util.Iterator;
 import users.User;
+import recordings.Local;
 
 /**
  * Main program to demonstrate the management of audiovisual productions.
@@ -51,10 +52,10 @@ public class Main {
 					listUsers(p);
 					break;
 				case SET:
-					//setLocal(in, production);
+					addSet(in, p);
 					break;
 				case SETS:
-					//
+					listSets(p);
 					break;
 				case SCHEDULE:
 					//
@@ -101,6 +102,11 @@ public class Main {
 		in.close();
 	}
 	
+	/**
+	 * Auxiliary method to register a new collaborator.
+	 * @param in data input stream.
+	 * @param p an audiovisual Production.
+	 */
 	private static void addUser(Scanner in, Production p) {
 		int hourlyCost;
 		String username;
@@ -110,7 +116,6 @@ public class Main {
 			userEnum = UserTypeEnum.UNKNOWN;
 		
 		NotorietyTypeEnum notorietyEnum;
-		
 		
 		if(userEnum.equals(UserTypeEnum.ACTOR) || userEnum.equals(UserTypeEnum.DIRECTOR)) {
 			notorietyEnum = NotorietyTypeEnum.getValue(in.next()); // null if it isn't an actor or director
@@ -144,15 +149,48 @@ public class Main {
 		
 	}
 	
+	/**
+	 * Auxiliary method to list all collaborators of an audiovisual Production.
+	 * @param p an audiovisual Production.
+	 */
 	private static void listUsers(Production p) {
 		Iterator<User> it = p.listUsers();
 		if(!it.hasNext())
 			System.out.println(MessagesEnum.USERLIST_EMPTY);
 		else
 			while(it.hasNext())
-				System.out.println(it.next().toString()); 	//TODO toString
+				System.out.println(it.next());
 	}
 	
+	/**
+	 * Auxiliary method to register a new set for recordings.
+	 * @param in data input stream.
+	 * @param p an audiovisual Production.
+	 */
+	private static void addSet(Scanner in, Production p) {
+		String localname = in.nextLine();
+		int localcost = in.nextInt();
+		in.nextLine();
+		
+		if(p.hasLocal(localname))
+			System.out.println(MessagesEnum.INVALID_LOCALNAME);
+		else {
+			if(localcost < 0)
+				System.out.println(MessagesEnum.INVALID_LOCALCOST);
+			else {
+				p.addLocal(localname, localcost);
+				System.out.println(MessagesEnum.LOCAL_SUCCESS);
+			}	
+		}		
+	}
+	 private static void listSets(Production p) {
+		Iterator<Local> it = p.listLocals();
+		if(!it.hasNext())
+			System.out.println(MessagesEnum.LOCALIST_EMPTY);
+		else
+			while(it.hasNext())
+				System.out.println(it.next());
+	 }
 	/**
 	 * Main program.
 	 * @param args
