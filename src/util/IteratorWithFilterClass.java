@@ -59,6 +59,9 @@ public class IteratorWithFilterClass<E> implements Iterator<E> {
 		return elem;
 	}
 	
+	/**
+	 * Sets counter in the next element with the desired status.
+	 */
 	private void searchNext() {
 		while ( (current < counter) && !vector[current].equals(status))
 			current++;
