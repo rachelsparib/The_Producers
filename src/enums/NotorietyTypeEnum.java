@@ -10,7 +10,8 @@ public enum NotorietyTypeEnum {
 	 * Enumeration constants and its values.
 	 */
 	STAR			("vedeta"),
-	NORMAL			("normal");
+	NORMAL			("normal"),
+	UNKNOWN			("");
 	
 	/**
 	 * Stores the name of the type of notoriety.

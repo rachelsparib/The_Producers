@@ -14,7 +14,8 @@ public enum UserTypeEnum {
 	TECHNICIAN		("tecnico"),
 	PRODUCER		("produtor"),
 	JUNIOR			("junior"),
-	SENIOR			("senior");
+	SENIOR			("senior"),
+	UNKNOWN			("");
 	
 	/**
 	 * Stores the name of the type of collaborator.

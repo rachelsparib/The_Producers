@@ -12,8 +12,8 @@ public enum MessagesEnum {
 	INVALID_OPTION				("Opcao inexistente"),
 	REGISTER_SUCCESS 			("Colaborador registado com sucesso!"),
 	INVALID_USERNAME			("Ja existe um colaborador com o mesmo nome."),
-	INVALID_USERTYPE			("Tipo de colaborador desconhecido"),
-	INVALID_STARTYPE			("Notoriedade invalida"),
+	INVALID_USERTYPE			("Tipo de colaborador desconhecido."),
+	INVALID_STARTYPE			("Notoriedade invalida."),
 	INVALID_HOURRATE			("Acha mesmo que este colaborador vai pagar para trabalhar?"),
 	USERLIST_EMPTY				("Nao existem colaboradores registados."),
 	
