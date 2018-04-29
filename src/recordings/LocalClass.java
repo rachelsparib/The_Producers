@@ -1,10 +1,12 @@
 package recordings;
 
+/**
+ * An implementation of the interface Local.
+ * @author Antonio Santos 49055 / Raquel Pena 45081.
+ *
+ */
 public class LocalClass implements Local {
-	//constants
 	
-	
-	//instance variables
 	/**
 	 * Stores local's name.
 	 */
@@ -15,12 +17,10 @@ public class LocalClass implements Local {
 	 */
 	private int cost;
 	
-	
-	//constructor
 	/**
-	 * Registers a new local for recordings.
-	 * @param name - name of the local.
-	 * @param cost - hourly cost of the local.
+	 * Creates a new local for recordings.
+	 * @param name name of the local.
+	 * @param cost hourly cost of the local.
 	 */
 	public LocalClass(String name, int cost) {
 		this.name = name;
@@ -28,7 +28,6 @@ public class LocalClass implements Local {
 	}
 	
 	
-	//public methods
 	@Override
 	public String getName() {
 		return name;
