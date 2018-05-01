@@ -84,9 +84,7 @@ public interface Recording {
 //	 */
 //	boolean isCollabAvailable(User u, LocalDateTime start, LocalDateTime end);
 	
-	
-	//boolean hasCollab(String username);	//TODO check utility!
-	
+		
 	/**
 	 * Returns the first producer (main producer) in the collection of collaborators in the recordings session.
 	 * @return main producer of the recording session.
@@ -105,5 +103,10 @@ public interface Recording {
 	 */
 	void rescheduleRecording(LocalDateTime date);
 	
-	
+	/**
+	 * Checks if a recording has a collaborator with name <code>username</code> in its collection of participating collaborators.
+	 * @param username collaborator name.
+	 * @return <code>true</code> if the recording has a collaborator in its collection of participating collaborators or <code>false</code> otherwise.
+	 */
+	boolean hasCollab(String username);
 }
