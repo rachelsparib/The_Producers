@@ -236,7 +236,20 @@ public class ProductionClass implements Production {
 		
 		return recfiltered.iterator();
 	}
-
+	
+	@Override
+	public Iterator<Recording> getRecCollectionByUser(User user) {
+		Iterator<Recording> it = getRecCollectionByStatus(RecordingStatusEnum.SCHEDULED);
+		
+		Array<Recording> recfiltered = new ArrayClass<Recording>(DEFAULT_SIZE);
+		while(it.hasNext()) {
+			Recording rec = it.next();
+			if(rec.hasCollab(user.getName()))
+				recfiltered.insertLast(rec);
+		}
+		
+		return recfiltered.iterator();
+	}
 
 	@Override
 	public boolean hasRecordingConflict(String localname, LocalDateTime start) {
@@ -370,8 +383,5 @@ public class ProductionClass implements Production {
 		}	
 		return recSuspended;
 	}
-	
-
-	
 
 }

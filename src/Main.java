@@ -81,7 +81,7 @@ public class Main {
 				places(in, p);
 				break;
 			case COLLABORATOR:
-				//
+				collaborator(in, p);
 				break;
 			case RECORD:
 				//
@@ -376,18 +376,46 @@ public class Main {
 			} else {
 				while (it.hasNext()) {
 					Recording record = it.next();
-					LocalDateTime date = record.getStartDate();
+					if (record.getLocal().equals(l)) {
+						LocalDateTime date = record.getStartDate();
 
-					System.out.format("%d %d %d; %s; %s.\n", date.getYear(), date.getMonth(), date.getDayOfMonth(),
-							record.getProducer().getName(), record.getDirector().getName());
+						System.out.format("%d %d %d; %s; %s.\n", date.getYear(), date.getMonth(), date.getDayOfMonth(),
+								record.getProducer().getName(), record.getDirector().getName());
 
-					totalCost += record.getTotalCost();
+						totalCost += record.getTotalCost();
+					}
+
+					int totalCostInt = Math.round(totalCost);
+					System.out.format("%d euros orcamentados.\n", totalCostInt);
+
 				}
-
-				int totalCostInt = Math.round(totalCost);
-				System.out.format("%d euros orcamentados.\n");
-
 			}
+		}
+	}
+
+	private static void collaborator(Scanner in, Production p) {
+		String name = in.nextLine();
+		User collab = p.getUser(name);
+		if (collab == null) {
+			System.out.println(MessagesEnum.UNKNOWN_COLLAB);
+		} else {
+
+			Iterator<Recording> it = p.getRecCollectionByUser(collab);
+			if (!it.hasNext()) {
+				System.out.format("Nenhuma gravacao prevista com %s.\n", collab.getName());
+			} else {
+				while (it.hasNext()) {
+					Recording record = it.next();
+					if (record.hasCollab(collab.getName())) {
+						LocalDateTime date = record.getStartDate();
+
+						System.out.format("%d %d %d; %s; %s.\n", date.getYear(), date.getMonth(), date.getDayOfMonth(),
+								record.getProducer().getName(), record.getDirector().getName());
+
+					}
+				}
+			}
+
 		}
 	}
 

@@ -42,4 +42,9 @@ public class LocalClass implements Local {
 	public String toString() {
 		return getName() + " " + getCost() + ".";
 	}
+	
+	@Override
+	public boolean equals(Local local){
+		return local.getName().equalsIgnoreCase(name) && local.getCost() == cost;		
+	}
 }

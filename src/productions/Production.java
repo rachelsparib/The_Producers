@@ -163,11 +163,17 @@ public interface Production {
 	
 	/**
 	 * Returns a collection of recordings with status <code>status</code>.
-	 * @param status status of the recording.
+	 * @param status of the recording.
 	 * @return collection of recordings with status <code>status</code>.
 	 */
 	Iterator<Recording> getRecCollectionByStatus(RecordingStatusEnum status);
 	
+	/**
+	 * Returns a collection of recordings from a specific <code>user</code>.
+	 * @param user that we want to find recording for.
+	 * @return collection of recordings with a specific <code>user</code>.
+	 */
+	public Iterator<Recording> getRecCollectionByUser(User user);
 	
 	/**
 	 * Checks if the recording has a conflict with any other recording.
