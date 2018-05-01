@@ -15,7 +15,7 @@ public class ActorClass extends UserClass implements Actor {
 	 * @param hourlyCost actor's cost charged per hour.
 	 * @param username name of the actor.
 	 */
-	public ActorClass(int hourlyCost, String username) {
+	public ActorClass(float hourlyCost, String username) {
 		super(hourlyCost, username);
 	}
 

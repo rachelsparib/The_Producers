@@ -15,7 +15,7 @@ public class DirectorClass extends UserClass implements Director {
 	 * @param hourlyCost director's cost charged per hour.
 	 * @param username name of the director.
 	 */
-	public DirectorClass(int hourlyCost, String username) {
+	public DirectorClass(float hourlyCost, String username) {
 		super(hourlyCost, username);
 	}
 

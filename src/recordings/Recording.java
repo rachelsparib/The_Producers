@@ -116,4 +116,10 @@ public interface Recording {
 	 * @return <code>true</code> if the recording has a collaborator in its collection of participating collaborators or <code>false</code> otherwise.
 	 */
 	boolean hasCollab(String username);
+	
+	/**
+	 * Returns the total cost of recording.
+	 * @return recording total cost.
+	 */
+	float getTotalCost();
 }

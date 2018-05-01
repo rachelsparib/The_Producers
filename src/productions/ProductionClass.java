@@ -332,8 +332,9 @@ public class ProductionClass implements Production {
 	 */
 	private int indexOfLocal(String localname) {
 		for(int i = 0; i < locals.size(); i++)
-			if (locals.get(i).getName().equals(localname))
+			if (locals.get(i).getName().compareToIgnoreCase(localname) == 0)
 				return i;
+		
 		return -1;
 	}
 

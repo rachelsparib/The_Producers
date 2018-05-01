@@ -14,7 +14,7 @@ public class TechnicianClass extends UserClass implements Technician {
 	 * @param hourlyCost technician's cost charged per hour.
 	 * @param username name of the technician.
 	 */
-	public TechnicianClass(int hourlyCost, String username) {
+	public TechnicianClass(float hourlyCost, String username) {
 		super(hourlyCost, username);
 	}
 

@@ -20,7 +20,7 @@ public class DirectorStarClass extends DirectorClass implements Director, Star {
 	 * @param hourlyCost actor's cost charged per hour.
 	 * @param username name of the actor.
 	 */
-	public DirectorStarClass(int hourlyCost, String username) {
+	public DirectorStarClass(float hourlyCost, String username) {
 		super(hourlyCost, username);
 	}
 	

@@ -12,7 +12,7 @@ public abstract class ProducerClass extends UserClass implements Producer {
 	 * @param hourlyCost junior producer's cost charged per hour.
 	 * @param username name of the junior producer.
 	 */
-	public ProducerClass(int hourlyCost, String username) {
+	public ProducerClass(float hourlyCost, String username) {
 		super(hourlyCost, username);
 	}
 	

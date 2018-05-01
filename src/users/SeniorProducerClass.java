@@ -14,7 +14,7 @@ public class SeniorProducerClass extends ProducerClass implements Producer {
 	 * @param hourlyCost senior producer's cost charged per hour.
 	 * @param username name of the senior producer.
 	 */
-	public SeniorProducerClass(int hourlyCost, String username) {
+	public SeniorProducerClass(float hourlyCost, String username) {
 		super(hourlyCost, username);
 	}
 

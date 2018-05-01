@@ -21,7 +21,7 @@ public class ActorStarClass extends ActorClass implements Actor, Star {
 	 * @param hourlyCost actor's cost charged per hour.
 	 * @param username name of the actor.
 	 */
-	public ActorStarClass(int hourlyCost, String username) {
+	public ActorStarClass(float hourlyCost, String username) {
 		super(hourlyCost, username);
 		blacklist = new ArrayClass<User>();
 	}
