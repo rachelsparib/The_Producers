@@ -8,7 +8,7 @@ import enums.UserTypeEnum;
  * @author Antonio Santos 49055 / Raquel Pena 45081.
  *
  */
-public class ActorClass extends AbstractUserClass implements Actor {
+public class ActorClass extends UserClass implements Actor {
 	
 	/**
 	 * Creates an actor.

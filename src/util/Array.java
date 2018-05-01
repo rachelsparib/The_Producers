@@ -1,4 +1,4 @@
-package array;
+package util;
 /**
  * 
  * @author Antonio Santos 49055 / Raquel Pena 45081.
@@ -53,7 +53,7 @@ public interface Array<E>{
 	
 	/**
 	 * Returns the element in the position <code>pos</code> of the array.
-	 * @param pos position ín the array of the element to be returned.
+	 * @param pos position in the array of the element to be returned.
 	 * @return the element in the position <code>pos</code>.
 	 * @pre pos < size()
 	 */

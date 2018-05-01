@@ -1,4 +1,4 @@
-package array;
+package util;
 
 /**
  * @author Antonio Santos 49055 / Raquel Pena 45081.

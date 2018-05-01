@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  */
 public abstract class UserClass implements User {
 	/**
-	 * Stores collaborator's name.
+	 * Collaborator's name.
 	 */
 	private String username;
 	
@@ -20,12 +20,12 @@ public abstract class UserClass implements User {
 	private int hourlyCost;
 	
 	/**
-	 * Collaborator's calendar with scheduled recordings.
+	 * Collaborator's calendar with scheduled recordings dates.
 	 */
 	private Array<LocalDateTime> calendar;
 	
 	/**
-	 * Creates a collaborator in the Production management system.
+	 * Creates a collaborator in the management system of an audiovisual production. 
 	 * @param hourlyCost cost per hour charged by the collaborator.
 	 * @param username collaborator's name.
 	 */
@@ -45,4 +45,19 @@ public abstract class UserClass implements User {
 	}
 	
 	public abstract String toString();
+	
+//	public Array<LocalDateTime> getCalendar(){			TODO not used
+//		return calendar;
+//	}
+	
+	public void addAppointment(LocalDateTime start, int duration) {
+		LocalDateTime end = start.plusMinutes(duration);
+		calendar.insertLast(start);
+		calendar.insertLast(end);
+	}
+	
+	public Iterator<LocalDateTime> listAppointments(){
+		return calendar.iterator();
+	}
+	
 }

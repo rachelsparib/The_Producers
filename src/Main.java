@@ -1,7 +1,8 @@
+import java.time.LocalDateTime;
 import java.util.Scanner;
 import enums.*;
 import productions.*;
-import util.Iterator;
+import util.*;
 import users.User;
 import recordings.Local;
 
@@ -58,7 +59,7 @@ public class Main {
 					listSets(p);
 					break;
 				case SCHEDULE:
-					//
+					schedule(in, p);
 					break;
 				case GRUMPY:
 					//
@@ -183,6 +184,11 @@ public class Main {
 			}	
 		}		
 	}
+	
+	/**
+	 * Auxiliary method to list all sets for recordings.
+	 * @param p an audiovisual Production.
+	 */
 	 private static void listSets(Production p) {
 		Iterator<Local> it = p.listLocals();
 		if(!it.hasNext())
@@ -191,6 +197,80 @@ public class Main {
 			while(it.hasNext())
 				System.out.println(it.next());
 	 }
+	 
+	 private static void schedule(Scanner in, Production p) {
+		 String localname = in.nextLine();
+		 int year = in.nextInt(); 
+		 int month = in.nextInt();
+		 int dayOfMonth = in.nextInt();
+		 int hour = in.nextInt();
+		 int minutes = in.nextInt();
+		 int duration = in.nextInt(); in.nextLine();
+		 String producerName = in.nextLine();
+		 String directorName = in.nextLine();
+		 String technicianName = in.nextLine();
+		 int collabs = in.nextInt(); in.nextLine();
+		 Array<String> collabsName = null;			// for storing each extra collabName
+		 
+		 for(int i = 0; i < collabs; i++) {	
+			 collabsName = new ArrayClass<String>();
+			 collabsName.insertLast(in.nextLine());
+		 }
+		 
+		 LocalDateTime start = LocalDateTime.of(year, month, dayOfMonth, hour, minutes);
+		 
+		 if(!p.hasLocal(localname))	// level 1
+			 System.out.println(MessagesEnum.UNKNOWN_LOCAL);
+		 else {
+			 if(p.isBeforeLastRecorded(start)) 	// level 2
+				 System.out.println(MessagesEnum.INVALID_DATE);
+			 else {
+				 if(duration < 0)		// level 3
+					 System.out.println(MessagesEnum.INVALID_DURATION);
+				 else {
+					 if(!p.hasUser(producerName))	// level 4
+						 System.out.println(MessagesEnum.UNKNOWN_PRODUCER);
+					 else {
+						 if(!p.hasUser(directorName))		// level 5
+							 System.out.println(MessagesEnum.UNKNOWN_DIRECTOR);
+						 else {
+							 if(!p.hasUser(technicianName))		// level 6
+								 System.out.println(MessagesEnum.UNKNOWN_TECHNICIAN);
+							 else {	
+								if(p.hasUserCollection(collabsName))		//level 7
+									System.out.println(MessagesEnum.UNKNOWN_COLLAB);
+								else {
+									collabsName.insertLast(directorName); //to check blacklist conflicts with the collection
+									collabsName.insertLast(producerName);
+									collabsName.insertLast(technicianName);
+									if(p.hasBlacklistConflict(collabsName) && !p.hasRecording(localname, start)) {	// level 8 
+										System.out.println(MessagesEnum.RECORD_STAR_PENDENT);
+										p.addRecording(localname, collabsName, start, duration);
+										if(!p.isRecordingSuspended(localname, start)) // suspends recording
+												p.toggleRecordingSuspension(localname, start);		
+									}else {
+										if(p.hasRecordingConflict(localname, start) && !p.hasProducerPriority(localname, start)) {		//level 9
+											System.out.println(MessagesEnum.RECORD_CONFLICT);											
+										}else {
+											if(p.hasRecordingConflict(localname, start) && p.hasProducerPriority(localname, start) && !p.hasRecording(localname, start)) { //level 10
+												p.rescheduleRecording(p.getConflictingRecording(localname, start));
+												p.addRecording(localname, collabsName, start, duration);
+												System.out.println(MessagesEnum.RECORD_CAUSED_RESCHED);
+											}else {
+												p.addRecording(localname, collabsName, start, duration);		// success
+												System.out.println(MessagesEnum.RECORD_ADDED_SUCCESS);
+											}
+										}
+									}
+								 }
+							 }
+						 }
+					 }
+				 }
+			 }
+		 }
+	 }
+	 
 	/**
 	 * Main program.
 	 * @param args

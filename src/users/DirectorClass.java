@@ -8,7 +8,7 @@ import enums.UserTypeEnum;
  * @author Antonio Santos 49055 / Raquel Pena 45081.
  *
  */
-public class DirectorClass extends AbstractUserClass implements Director {
+public class DirectorClass extends UserClass implements Director {
 	
 	/**
 	 * Creates a director.
