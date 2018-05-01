@@ -3,6 +3,7 @@ package recordings;
 import java.time.LocalDateTime;
 
 import enums.RecordingStatusEnum;
+import users.Director;
 import users.Producer;
 import users.User;
 import util.Array;
@@ -161,6 +162,17 @@ public class RecordingClass implements Recording {
 			u = it.next();
 			if(u instanceof Producer)
 				return (Producer)u;
+		return null;
+	}
+	
+	@Override
+	public Director getDirector() {
+		Iterator<User> it = collabs.iterator();
+		User u = null;
+		while(it.hasNext())
+			u = it.next();
+			if(u instanceof Director)
+				return (Director)u;
 		return null;
 	}
 

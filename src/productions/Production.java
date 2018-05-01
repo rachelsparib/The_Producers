@@ -166,7 +166,7 @@ public interface Production {
 	 * @param status status of the recording.
 	 * @return collection of recordings with status <code>status</code>.
 	 */
-	Array<Recording> getRecCollectionByStatus(RecordingStatusEnum status);
+	Iterator<Recording> getRecCollectionByStatus(RecordingStatusEnum status);
 	
 	
 	/**

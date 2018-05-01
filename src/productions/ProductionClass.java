@@ -120,24 +120,39 @@ public class ProductionClass implements Production {
 		return locals.iterator();
 	}
 
-
+	
 	@Override
 	public void addRecording(String localname, Array<String> collabsName, LocalDateTime start, int duration) {
 		Recording rec = new RecordingClass(getLocal(localname), getUserCollection(collabsName), start, duration);
-		recordings.insertLast(rec);
+		
+		int i;
+		for (i = 0; i < recordings.size(); i++){
+			Recording currentRecording = recordings.get(i);
+			if(rec.getStartDate().isAfter(currentRecording.getStartDate())){
+				break;
+			} else if(rec.getStartDate().isEqual(currentRecording.getStartDate())){
+				if(rec.getDuration() < currentRecording.getDuration()){
+					break;
+				}
+			}
+		}
+		
+		if(i==recordings.size()){
+			recordings.insertLast(rec);
+		}else{
+			recordings.insertAt(rec, i);
+		}
 	}
 	
 	@Override
 	public boolean isBeforeLastRecorded(LocalDateTime startDate) {
-		Array<Recording> vector = this.getRecCollectionByStatus(RecordingStatusEnum.DONE);
-		if(vector.size() > 0) {
-			Iterator<Recording> it = vector.iterator();
-			while(it.hasNext()) {
-				Recording rec = it.next();
-				if(startDate.isBefore(rec.getEndDate()))
-					return true;
-			}
+		Iterator<Recording> it = this.getRecCollectionByStatus(RecordingStatusEnum.DONE);
+		while(it.hasNext()) {
+			Recording rec = it.next();
+			if(startDate.isBefore(rec.getEndDate()))
+				return true;
 		}
+		
 		return false;
 	}
 	
@@ -210,7 +225,7 @@ public class ProductionClass implements Production {
 	}
 	
 	@Override
-	public Array<Recording> getRecCollectionByStatus(RecordingStatusEnum status) {
+	public Iterator<Recording> getRecCollectionByStatus(RecordingStatusEnum status) {
 		Iterator<Recording> it = listRecordings();	
 		Array<Recording> recfiltered = new ArrayClass<Recording>(DEFAULT_SIZE);
 		while(it.hasNext()) {
@@ -218,7 +233,8 @@ public class ProductionClass implements Production {
 			if(rec.getStatus().equals(status))
 				recfiltered.insertLast(rec);
 		}
-		return recfiltered;
+		
+		return recfiltered.iterator();
 	}
 
 

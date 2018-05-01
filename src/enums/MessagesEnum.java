@@ -30,8 +30,9 @@ public enum MessagesEnum {
 	RECORD_STAR_PENDENT			("Gravacao pendente de uma birra."),
 	RECORD_CONFLICT				("Gravacao nao agendada por conflito de datas."),
 	RECORD_CAUSED_RESCHED		("Gravacao prioritaria agendada provocou mudancas noutra(s) gravacao(oes)."),
-	RECORD_ADDED_SUCCESS		("Gravacao agendada com sucesso"),
-	
+	RECORD_ADDED_SUCCESS		("Gravacao agendada com sucesso."),
+	RECORD_EMPTY_DONE			("Nenhuma gravacao realizada."),
+	RECORD_EMPTY_SCHEDULE		("Nenhuma gravacao prevista."),
 	EXIT 						("Ate a proxima"),
 	OK							("");
 		

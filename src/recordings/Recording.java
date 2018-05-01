@@ -3,6 +3,7 @@ package recordings;
 import java.time.LocalDateTime;
 
 import enums.RecordingStatusEnum;
+import users.Director;
 import users.Producer;
 import users.User;
 import util.Array;
@@ -92,6 +93,12 @@ public interface Recording {
 	 * @return main producer of the recording session.
 	 */
 	Producer getProducer();	
+	
+	/**
+	 * Returns the first director (main director) in the collection of collaborators in the recordings session.
+	 * @return main director of the recording session.
+	 */
+	Director getDirector();
 	
 	/**
 	 * Returns the next available time of the collaborators involved in this recording or null if all collaborators haven't appointments.

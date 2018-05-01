@@ -5,6 +5,7 @@ import productions.*;
 import util.*;
 import users.User;
 import recordings.Local;
+import recordings.Recording;
 
 /**
  * Main program to demonstrate the management of audiovisual productions.
@@ -68,10 +69,10 @@ public class Main {
 					//
 					break;
 				case PERFORMED:
-					//
+					performed(p);
 					break;
 				case PLANNED:
-					//
+					planned(p);
 					break;
 				case PLACES:
 					//
@@ -103,6 +104,7 @@ public class Main {
 		in.close();
 	}
 	
+
 	/**
 	 * Auxiliary method to register a new collaborator.
 	 * @param in data input stream.
@@ -270,6 +272,35 @@ public class Main {
 			 }
 		 }
 	 }
+	 
+	 
+	 private static void performed(Production p){
+		 Iterator<Recording> recording = p.getRecCollectionByStatus(RecordingStatusEnum.DONE);
+		 if (!recording.hasNext()) {
+			 System.out.println(MessagesEnum.RECORD_EMPTY_DONE);
+		 } else {
+			 while(recording.hasNext()){
+				Recording record = recording.next();
+				LocalDateTime date = record.getStartDate();
+				
+				System.out.format("%d %d %d; %s; %s; %s.", date.getYear(), date.getMonth(), date.getDayOfMonth(), record.getLocal().getName(), record.getProducer().getName(), record.getDirector().getName());
+			 }
+		 }
+	 }
+	 
+	 private static void planned(Production p) {
+		 Iterator<Recording> recording = p.getRecCollectionByStatus(RecordingStatusEnum.SCHEDULED);
+		 if (!recording.hasNext()) {
+			 System.out.println(MessagesEnum.RECORD_EMPTY_SCHEDULE);
+		 } else {
+			 while(recording.hasNext()){
+				Recording record = recording.next();
+				LocalDateTime date = record.getStartDate();
+				
+				System.out.format("%d %d %d; %s; %s; %s.", date.getYear(), date.getMonth(), date.getDayOfMonth(), record.getLocal().getName(), record.getProducer().getName(), record.getDirector().getName());
+			 }
+		 }
+	}
 	 
 	/**
 	 * Main program.
