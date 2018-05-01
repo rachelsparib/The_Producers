@@ -176,13 +176,13 @@ public class RecordingClass implements Recording {
 		return null;
 	}
 
-//	@Override
-//	public boolean hasCollab(String username) {
-//		for(int i = 0; i < collabs.size(); i++)
-//			if(collabs.get(i).getName().equals(username))
-//				return true;
-//		return false;
-//	}
+	@Override
+	public boolean hasCollab(String username) {
+		for(int i = 0; i < collabs.size(); i++)
+			if(collabs.get(i).getName().equals(username))
+				return true;
+		return false;
+	}
 
 	@Override
 	public LocalDateTime getCollabsMaxTime() {

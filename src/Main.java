@@ -63,7 +63,7 @@ public class Main {
 					schedule(in, p);
 					break;
 				case GRUMPY:
-					//
+					//grumpy(in, p);
 					break;
 				case RECONCILE:
 					//
@@ -200,6 +200,11 @@ public class Main {
 				System.out.println(it.next());
 	 }
 	 
+	 /**
+	  * Auxiliary method to schedule a new recording.
+	  * @param in data input stream.
+	  * @param p an audiovisual Production.
+	  */
 	 private static void schedule(Scanner in, Production p) {
 		 String localname = in.nextLine();
 		 int year = in.nextInt(); 
@@ -273,6 +278,25 @@ public class Main {
 		 }
 	 }
 	 
+	 private static void grumpy(Scanner in, Production p) {
+		 String starname = in.nextLine();
+		 String collabname = in.nextLine();
+		 if(!p.hasStar(starname))
+			 System.out.println(starname + MessagesEnum.INVALID_STAR);
+		 else {
+			 if(!p.hasUser(collabname))
+				 System.out.println(collabname + MessagesEnum.INVALID_COLLAB);
+			 else {
+				 if(p.hasCollabInBlacklist(starname, collabname))
+					 System.out.println(MessagesEnum.INVALID_ADD_BLACKLIST);
+				 else {
+					 int num =  p.addCollabToBlacklist(starname, collabname);
+					 System.out.println(starname + " colocou " + collabname + " na sua lista negra, suspendendo " + num + " gravacoes.");
+				 }
+
+			 }
+		 }
+	 }
 	 
 	 private static void performed(Production p){
 		 Iterator<Recording> recording = p.getRecCollectionByStatus(RecordingStatusEnum.DONE);

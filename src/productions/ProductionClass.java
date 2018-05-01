@@ -338,6 +338,39 @@ public class ProductionClass implements Production {
 	}
 
 
+	@Override
+	public boolean hasStar(String starname) {
+		int index = indexOfUser(starname);
+		if(users.get(index) instanceof Star)
+			return true;
+		return false;
+	}
+
+
+	@Override
+	public boolean hasCollabInBlacklist(String starname, String collabname) {
+		Star s = (Star)users.get(indexOfUser(starname));
+		User c = users.get(indexOfUser(collabname));
+		return s.isUserInBlackList(c);
+	}
+
+
+	@Override
+	public int addCollabToBlacklist(String starname, String collabname) {
+		Star s = (Star)users.get(indexOfUser(starname));
+		User c = users.get(indexOfUser(collabname));
+		s.addUserBlacklist(c);
+		int recSuspended = 0;
+		Iterator<Recording> it = listRecordings();
+		while(it.hasNext()) {
+			Recording rec = it.next();
+			if(rec.hasCollab(starname) && rec.hasCollab(collabname))
+				recSuspended++;
+		}	
+		return recSuspended;
+	}
+	
+
 	
 
 }
