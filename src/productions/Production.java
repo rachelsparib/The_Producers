@@ -231,15 +231,16 @@ public interface Production {
 	 * @param collabname name of the collaborator.
 	 * pre: !hasCollabInBlacklist(starname, collabname)
 	 */
-	void addCollabToBlacklist(String starname, String collabname);
+	int addCollabToBlacklist(String starname, String collabname);
+	
+	
+	
 	
 	
 	
 //	boolean hasRescheduledAnotherRecording(String localname, LocalDateTime start);	//TODO
 	
 	
-	
-	//addUserToBlacklist(username)		//use getUser(username); @Pre: hasUser
 	//removeUserFromBlacklist(username)	//use getUser(username); @Pre: hasUser
 	//listUserBlacklist(username)
 	//hasUserInRecording(username)
