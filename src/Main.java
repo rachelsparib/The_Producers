@@ -290,7 +290,6 @@ public class Main {
 				 else {
 					 int num =  p.addCollabToBlacklist(starname, collabname);
 					 System.out.println(starname + " colocou " + collabname + " na sua lista negra, suspendendo " + num + " gravacoes.");
-);
 				 }
 
 			 }
