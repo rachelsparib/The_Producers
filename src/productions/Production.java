@@ -209,6 +209,30 @@ public interface Production {
 	 */
 	void rescheduleRecording(Recording rec);
 	
+	/**
+	 * Checks if a star with name <code>starname</code> exists.
+	 * @param starname star's name.
+	 * @return <code>true</code> if a star with name <code>starname</code> exists or <code>false</code> otherwise.
+	 */
+	boolean hasStar(String starname);
+	
+	/**
+	 * Checks if a collaborator with name <code>collabname</code> is in the blacklist of the star with name <code>starname</code>.
+	 * @param starname name of the star.
+	 * @param collabname name of the collaborator.
+	 * @return <code>true</code> if a collaborator with name <code>collabname</code> is in the blacklist of the star with name <code>starname</code> or <code>false</code> otherwise.
+	 * @pre hasStar(starname) && hasUser(collabname)
+	 */
+	boolean hasCollabInBlacklist(String starname, String collabname);
+	
+	/**
+	 * Adds a collaborator with name <code>collabname</code> to  the blacklist of the star with name <code>starname</code>.
+	 * @param starname name of the star.
+	 * @param collabname name of the collaborator.
+	 * pre: !hasCollabInBlacklist(starname, collabname)
+	 */
+	void addCollabToBlacklist(String starname, String collabname);
+	
 	
 	
 //	boolean hasRescheduledAnotherRecording(String localname, LocalDateTime start);	//TODO
