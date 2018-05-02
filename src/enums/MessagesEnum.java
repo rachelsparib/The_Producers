@@ -37,6 +37,7 @@ public enum MessagesEnum {
 	NOT_IN_BLACKLIST			("Nao existe zanga com "),
  	RECORD_EMPTY_DONE			("Nenhuma gravacao realizada."),
  	RECORD_EMPTY_SCHEDULE		("Nenhuma gravacao prevista."),
+ 	NO_SCHEDULE_RECORDING		("Nenhuma gravacao agendada."),
 	
 	EXIT 						("Ate a proxima"),
 	OK							("");

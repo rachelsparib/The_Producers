@@ -87,7 +87,7 @@ public class Main {
 				collaborator(in, p);
 				break;
 			case RECORD:
-				//
+				record(p);
 				break;
 			case GRUMPIES:
 				//
@@ -394,19 +394,19 @@ public class Main {
 			System.out.println(MessagesEnum.RECORD_EMPTY_DONE);
 		} else {
 			float totalCost = 0.0f;
-			
+
 			while (recording.hasNext()) {
 				Recording record = recording.next();
 				LocalDateTime date = record.getStartDate();
 
-				System.out.format("%d %d %d; %s; %s; %s.\n", date.getYear(), date.getMonth(), date.getDayOfMonth(),
+				System.out.format("%d %d %d; %s; %s; %s.\n", date.getYear(), date.getMonthValue(), date.getDayOfMonth(),
 						record.getLocal().getName(), record.getProducer().getName(), record.getDirector().getName());
-				
+
 				totalCost += record.getTotalCost();
 			}
-			
+
 			int totalCostInt = Math.round(totalCost);
-			System.out.format("%d euros orcamentados.\n", totalCostInt);
+			System.out.format("%d euros gastos.\n", totalCostInt);
 		}
 	}
 
@@ -416,7 +416,7 @@ public class Main {
 			System.out.println(MessagesEnum.RECORD_EMPTY_SCHEDULE);
 		} else {
 			float totalCost = 0.0f;
-			
+
 			while (it.hasNext()) {
 				Recording rec = it.next();
 				LocalDateTime date = rec.getStartDate();
@@ -426,10 +426,10 @@ public class Main {
 
 				System.out.format("%d %d %d; %s; %s; %s.\n", date.getYear(), date.getMonthValue(), date.getDayOfMonth(),
 						local.getName(), producer.getName(), director.getName());
-				
+
 				totalCost += rec.getTotalCost();
 			}
-			
+
 			int totalCostInt = Math.round(totalCost);
 			System.out.format("%d euros orcamentados.\n", totalCostInt);
 		}
@@ -453,13 +453,13 @@ public class Main {
 					if (record.getLocal().equals(l)) {
 						LocalDateTime date = record.getStartDate();
 
-						System.out.format("%d %d %d; %s; %s.\n", date.getYear(), date.getMonth(), date.getDayOfMonth(),
-								record.getProducer().getName(), record.getDirector().getName());
+						System.out.format("%d %d %d; %s; %s.\n", date.getYear(), date.getMonthValue(),
+								date.getDayOfMonth(), record.getProducer().getName(), record.getDirector().getName());
 
 						totalCost += record.getTotalCost();
 					}
 				}
-				
+
 				int totalCostInt = Math.round(totalCost);
 				System.out.format("%d euros orcamentados.\n", totalCostInt);
 			}
@@ -482,13 +482,36 @@ public class Main {
 					if (record.hasCollab(collab.getName())) {
 						LocalDateTime date = record.getStartDate();
 
-						System.out.format("%d %d %d; %s; %s.\n", date.getYear(), date.getMonth(), date.getDayOfMonth(),
-								record.getProducer().getName(), record.getDirector().getName());
+						System.out.format("%d %d %d; %s; %s.\n", date.getYear(), date.getMonthValue(),
+								date.getDayOfMonth(), record.getProducer().getName(), record.getDirector().getName());
 
 					}
 				}
 			}
 
+		}
+	}
+
+	private static void record(Production p) {
+		Iterator<Recording> it = p.listRecordingsByStatus(RecordingStatusEnum.SCHEDULED);
+		if (!it.hasNext()) {
+			System.out.println(MessagesEnum.NO_SCHEDULE_RECORDING);
+		} else {
+			Recording rec = it.next();
+			LocalDateTime date = rec.getStartDate();
+
+			p.changeRecordingStatus(rec.getLocal().getName(), rec.getStartDate(), RecordingStatusEnum.DONE);
+
+			if (rec.isSuspended()) {
+				System.out.format("%d %d %d; %s; %s; %s. Cancelada!\n", date.getYear(), date.getMonthValue(),
+						date.getDayOfMonth(), rec.getLocal().getName(), rec.getProducer().getName(),
+						rec.getDirector().getName());
+
+			} else {
+				System.out.format("%d %d %d; %s; %s; %s. Gravada!\n", date.getYear(), date.getMonthValue(),
+						date.getDayOfMonth(), rec.getLocal().getName(), rec.getProducer().getName(),
+						rec.getDirector().getName());
+			}
 		}
 	}
 
