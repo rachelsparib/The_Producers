@@ -89,8 +89,11 @@ public class ProductionClass implements Production {
 	}
 
 	@Override
-	public User getUser(String username) { // Pre: hasUser(username)
-		return users.get(indexOfUser(username));
+	public User getUser(String username) {
+		if (hasUser(username))
+			return users.get(indexOfUser(username));
+		else
+			return null;
 	}
 
 	@Override
