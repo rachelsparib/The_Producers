@@ -395,11 +395,18 @@ public class Main {
 			while (recording.hasNext()) {
 				Recording record = recording.next();
 				LocalDateTime date = record.getStartDate();
+				
+				String state = "";
+				if (record.isCanceled())
+					state = " Cancelada!";
+				else if (record.isSuspended())
+					state = " Suspensa!";
 
-				System.out.format("%d %d %d; %s; %s; %s.\n", date.getYear(), date.getMonthValue(), date.getDayOfMonth(),
-						record.getLocal().getName(), record.getProducer().getName(), record.getDirector().getName());
+				System.out.format("%d %d %d; %s; %s; %s.%s\n", date.getYear(), date.getMonthValue(), date.getDayOfMonth(),
+						record.getLocal().getName(), record.getProducer().getName(), record.getDirector().getName(), state);
 
-				totalCost += record.getTotalCost();
+				if (!record.isCanceled() && !record.isSuspended())
+					totalCost += record.getTotalCost();
 			}
 
 			int totalCostInt = Math.round(totalCost);
@@ -420,9 +427,15 @@ public class Main {
 				Local local = rec.getLocal();
 				User producer = rec.getProducer();
 				User director = rec.getDirector();
+				
+				String state = "";
+				if (rec.isCanceled())
+					state = " Cancelada!";
+				else if (rec.isSuspended())
+					state = " Suspensa!";
 
-				System.out.format("%d %d %d; %s; %s; %s.\n", date.getYear(), date.getMonthValue(), date.getDayOfMonth(),
-						local.getName(), producer.getName(), director.getName());
+				System.out.format("%d %d %d; %s; %s; %s.%s\n", date.getYear(), date.getMonthValue(), date.getDayOfMonth(),
+						local.getName(), producer.getName(), director.getName(), state);
 
 				totalCost += rec.getTotalCost();
 			}
@@ -511,6 +524,7 @@ public class Main {
 						date.getDayOfMonth(), rec.getLocal().getName(), rec.getProducer().getName(),
 						rec.getDirector().getName());
 
+				rec.toggleCanceled();
 			} else {
 				System.out.format("%d %d %d; %s; %s; %s. Gravada!\n", date.getYear(), date.getMonthValue(),
 						date.getDayOfMonth(), rec.getLocal().getName(), rec.getProducer().getName(),

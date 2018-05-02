@@ -58,6 +58,17 @@ public interface Recording {
 	void toggleSuspension();
 	
 	/**
+	 * Checks if the recording is canceled.
+	 * @return <code>true</code> if it is canceled.
+	 */
+	boolean isCanceled();
+	
+	/**
+	 * Changes recording canceled status.
+	 */
+	void toggleCanceled();
+	
+	/**
 	 * Changes a recording status to <code>status</code>.
 	 * @param status status of the recording.
 	 */

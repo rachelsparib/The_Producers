@@ -44,6 +44,11 @@ public class RecordingClass implements Recording {
 	private boolean suspended;
 	
 	/**
+	 * Flag for canceled recording.
+	 */
+	private boolean canceled;
+	
+	/**
 	 * Adds a new recording to the recordings' schedule.
 	 * @param users collaborators participating in the recording.
 	 * @param date initial date of the recording.
@@ -253,6 +258,16 @@ public class RecordingClass implements Recording {
 		for(int i = 0; i < collabs.size(); i++) {
 			collabs.get(i).addAppointment(start, duration);
 		}
+	}
+
+	@Override
+	public boolean isCanceled() {
+		return canceled;
+	}
+
+	@Override
+	public void toggleCanceled() {
+		canceled = !canceled;
 	}
 	
 //	@Override
