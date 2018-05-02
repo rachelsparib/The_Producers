@@ -3,6 +3,7 @@ package recordings;
 import java.time.LocalDateTime;
 
 import enums.RecordingStatusEnum;
+import users.Director;
 import users.Producer;
 import users.User;
 import util.Array;
@@ -110,7 +111,7 @@ public interface Recording {
 	 * Returns the first director (main director) in the collection of collaborators in the recordings session.
 	 * @return main director of the recording session.
 	 */
-	User getDirector();
+	Director getDirector();
 	
 	
 //	/**

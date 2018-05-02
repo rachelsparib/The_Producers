@@ -82,7 +82,7 @@ public interface Production {
 	 * @param duration recording's duration.
 	 * @pre !hasRecording(localname, start) && !isBeforeLast(start) && hasLocal(localname) && hasCollabs(collabsName)
 	 */
-	void addRecording(String localname, Array<String> collabsName, LocalDateTime start, int duration);
+	void addRecording(String localname, Array<User> collabs, LocalDateTime start, int duration);
 	
 	/**
 	 * Checks if a recording initial date if before the last recorded.
@@ -175,7 +175,7 @@ public interface Production {
 	 * @param start instant of time of the beginning of the recording.
 	 * @return <code>true</code> if exists a conflict with another recording or <code>false</code> otherwise.
 	 */
-	boolean hasRecordingConflict(String localname, LocalDateTime start);	//TODO and include situation of hasProducerPriority(RecordingRec)
+	boolean hasRecordingConflict(String localname, LocalDateTime start, int duration, Array<User> collabs);	//TODO and include situation of hasProducerPriority(RecordingRec)
 	
 	/**
 	 * Checks if a recording has priority over other conflicting recording (producer of superior rank).

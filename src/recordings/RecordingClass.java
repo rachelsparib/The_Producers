@@ -159,11 +159,13 @@ public class RecordingClass implements Recording {
 	@Override
 	public Producer getProducer() {
 		Iterator<User> it = collabs.iterator();
-		User u = null;
-		while(it.hasNext())
-			u = it.next();
+
+		while(it.hasNext()) {
+			User u = it.next();
 			if(u instanceof ProducerClass)
 				return (Producer)u;
+		}
+		
 		return null;
 	}
 
@@ -217,23 +219,29 @@ public class RecordingClass implements Recording {
 	
 	@Override
 	public float getTotalCost() {
-		float totalCost = local.getCost();
+		int durationH = (int)Math.ceil(duration / 60.0);
+		float totalCost = local.getCost() * durationH;
+		
 		Iterator<User> it = collabs.iterator();
 		while(it.hasNext()){
  			User user = it.next();
- 			totalCost += (user.getHourlyCost() * duration ) / 60;
+ 			
+ 			totalCost += user.getHourlyCost() * durationH;
 		}
+		
 		return totalCost;
 	}
 	
 	@Override
-	public User getDirector() {
+	public Director getDirector() {
 		Iterator<User> it = collabs.iterator();
-		User u = null;
-		while(it.hasNext())
-			u = it.next();
-			if(u instanceof DirectorClass)
+		
+		while(it.hasNext()) {
+			User u = it.next();
+			if(u instanceof Director)
 				return (Director)u;
+		}
+		
 		return null;
 	}
 
