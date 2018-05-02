@@ -110,8 +110,11 @@ public class ProductionClass implements Production {
 	}
 
 	@Override
-	public Local getLocal(String localname) { // Pre: hasLocal(localname)
-		return locals.get(indexOfLocal(localname));
+	public Local getLocal(String localname) { 
+		if (hasLocal(localname))
+			return locals.get(indexOfLocal(localname));
+		else
+			return null;
 	}
 
 	@Override
