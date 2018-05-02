@@ -445,23 +445,25 @@ public class Main {
 
 			Iterator<Recording> it = p.listRecordingsByStatus(RecordingStatusEnum.SCHEDULED);
 
-			if (!it.hasNext()) {
-				System.out.format("Nenhuma gravacao prevista em %s.\n", l.getName());
-			} else {
-				while (it.hasNext()) {
-					Recording record = it.next();
-					if (record.getLocal().equals(l)) {
-						LocalDateTime date = record.getStartDate();
+			boolean hasRecordings = false;
+			while (it.hasNext()) {
+				Recording record = it.next();
+				if (record.getLocal().equals(l)) {
+					LocalDateTime date = record.getStartDate();
 
-						System.out.format("%d %d %d; %s; %s.\n", date.getYear(), date.getMonthValue(),
-								date.getDayOfMonth(), record.getProducer().getName(), record.getDirector().getName());
+					System.out.format("%d %d %d; %s; %s.\n", date.getYear(), date.getMonthValue(), date.getDayOfMonth(),
+							record.getProducer().getName(), record.getDirector().getName());
 
-						totalCost += record.getTotalCost();
-					}
+					totalCost += record.getTotalCost();
+					hasRecordings = true;
 				}
+			}
 
+			if (hasRecordings) {
 				int totalCostInt = Math.round(totalCost);
 				System.out.format("%d euros orcamentados.\n", totalCostInt);
+			} else {
+				System.out.format("Nenhuma gravacao prevista em %s.\n", l.getName());
 			}
 		}
 	}
