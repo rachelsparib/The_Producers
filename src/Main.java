@@ -479,6 +479,8 @@ public class Main {
 			if (!it.hasNext()) {
 				System.out.format("Nenhuma gravacao prevista com %s.\n", collab.getName());
 			} else {
+				float totalCost = 0.0f;
+
 				while (it.hasNext()) {
 					Recording record = it.next();
 					if (record.hasCollab(collab.getName())) {
@@ -487,10 +489,13 @@ public class Main {
 						System.out.format("%d %d %d; %s; %s.\n", date.getYear(), date.getMonthValue(),
 								date.getDayOfMonth(), record.getProducer().getName(), record.getDirector().getName());
 
+						totalCost += record.getTotalCost();
 					}
 				}
-			}
 
+				int totalCostInt = Math.round(totalCost);
+				System.out.format("%d euros orcamentados.\n", totalCostInt);
+			}
 		}
 	}
 
