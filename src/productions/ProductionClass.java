@@ -120,11 +120,10 @@ public class ProductionClass implements Production {
 		return locals.iterator();
 	}
 
-	
+
 	@Override
 	public void addRecording(String localname, Array<String> collabsName, LocalDateTime start, int duration) {
 		Recording rec = new RecordingClass(getLocal(localname), getUserCollection(collabsName), start, duration);
-		
 		int i;
 		for (i = 0; i < recordings.size(); i++){
 			Recording currentRecording = recordings.get(i);
@@ -137,7 +136,7 @@ public class ProductionClass implements Production {
 			}
 		}
 		
-		if(i==recordings.size()){
+		if(i ==recordings.size()){
 			recordings.insertLast(rec);
 		}else{
 			recordings.insertAt(rec, i);
@@ -146,13 +145,12 @@ public class ProductionClass implements Production {
 	
 	@Override
 	public boolean isBeforeLastRecorded(LocalDateTime startDate) {
-		Iterator<Recording> it = this.getRecCollectionByStatus(RecordingStatusEnum.DONE);
+		Iterator<Recording> it = this.listRecordingsByStatus(RecordingStatusEnum.DONE);
 		while(it.hasNext()) {
 			Recording rec = it.next();
 			if(startDate.isBefore(rec.getEndDate()))
 				return true;
 		}
-		
 		return false;
 	}
 	
@@ -187,8 +185,13 @@ public class ProductionClass implements Production {
 	public Array<User> getUserCollection(Array<String> collabsName) {
 		Iterator<User> it = listUsers();
 		Array<User> collabsInRec = new ArrayClass<User>();
-		while(it.hasNext())
-			collabsInRec.insertLast(it.next()); 
+		while(it.hasNext()) {
+			User u = it.next();
+			 for(int i = 0; i < collabsName.size(); i++) {
+			 		if( u.getName().equals(collabsName.get(i)))
+			 			collabsInRec.insertLast(u);
+			 }
+		}
 		return collabsInRec;
 	}
 	
@@ -199,7 +202,7 @@ public class ProductionClass implements Production {
 			 User u = it.next();
 			 if(u instanceof Star) {
 				 for(int i = 0; i < collabsName.size(); i++)
-			 		if( ((Star)u).isUserInBlackList(getUser(collabsName.get(i))))
+			 		if( ((Star)u).isUserInBlacklist(getUser(collabsName.get(i))))
 			 			return true;
 			 }	
 		}
@@ -225,7 +228,7 @@ public class ProductionClass implements Production {
 	}
 	
 	@Override
-	public Iterator<Recording> getRecCollectionByStatus(RecordingStatusEnum status) {
+	public Iterator<Recording> listRecordingsByStatus(RecordingStatusEnum status) {
 		Iterator<Recording> it = listRecordings();	
 		Array<Recording> recfiltered = new ArrayClass<Recording>(DEFAULT_SIZE);
 		while(it.hasNext()) {
@@ -233,32 +236,21 @@ public class ProductionClass implements Production {
 			if(rec.getStatus().equals(status))
 				recfiltered.insertLast(rec);
 		}
-		
 		return recfiltered.iterator();
 	}
-	
-	@Override
-	public Iterator<Recording> getRecCollectionByUser(User user) {
-		Iterator<Recording> it = getRecCollectionByStatus(RecordingStatusEnum.SCHEDULED);
-		
-		Array<Recording> recfiltered = new ArrayClass<Recording>(DEFAULT_SIZE);
-		while(it.hasNext()) {
-			Recording rec = it.next();
-			if(rec.hasCollab(user.getName()))
-				recfiltered.insertLast(rec);
-		}
-		
-		return recfiltered.iterator();
-	}
+
 
 	@Override
 	public boolean hasRecordingConflict(String localname, LocalDateTime start) {
 		Iterator<Recording> it = listRecordings();
-		Recording rec = getRecording(localname, start);
-		while(it.hasNext()) {
-			Recording other = it.next();
-			if(rec.equals(other))
-				return true;
+		Recording rec = null;
+		if(hasRecording(localname, start)) {
+			rec = getRecording(localname, start);
+			while(it.hasNext()) {
+				Recording other = it.next();
+				if(rec.equals(other))
+					return true;
+			}
 		}
 		return false;
 	}
@@ -266,11 +258,14 @@ public class ProductionClass implements Production {
 	@Override
 	public boolean hasProducerPriority(String localname, LocalDateTime start) {	//pre: hasRecordingConflict(localname, start)
 		Iterator<Recording> it = listRecordings();
-		Recording rec = getRecording(localname, start);
-		while(it.hasNext()) {
-			Recording other = it.next();
-			if(((rec.getProducer() instanceof SeniorProducerClass) && ((other.getProducer() instanceof SeniorProducerClass))))
-				return true;
+		Recording rec = null;
+		if(hasRecording(localname, start)) {
+			rec = getRecording(localname, start);
+			while(it.hasNext()) {
+				Recording other = it.next();
+				if(((rec.getProducer() instanceof SeniorProducerClass) && ((other.getProducer() instanceof SeniorProducerClass))))
+					return true;
+			}
 		}
 		return false;
 	}
@@ -278,20 +273,16 @@ public class ProductionClass implements Production {
 	@Override
 	public Recording getConflictingRecording(String localname, LocalDateTime start) {	//Pre:  hasRecordingConflict(localname, start)
 		Iterator<Recording> it = listRecordings();
-		Recording rec = getRecording(localname, start);
-		while(it.hasNext()) {
-			Recording other = it.next();
-			if(rec.equals(other))
-				return other;
+		if(hasRecording(localname, start)) {
+			Recording rec = getRecording(localname, start);
+			while(it.hasNext()) {
+				Recording other = it.next();
+				if(rec.equals(other))
+					return other;
+			}
 		}
 		return null;
 	}
-
-//	@Override
-//	public Producer getMainProducerOfRec(Recording rec) {		//TODO not used. Remove in the end.
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
 	
 	@Override
 	public void rescheduleRecording(Recording rec) {
@@ -345,9 +336,8 @@ public class ProductionClass implements Production {
 	 */
 	private int indexOfLocal(String localname) {
 		for(int i = 0; i < locals.size(); i++)
-			if (locals.get(i).getName().compareToIgnoreCase(localname) == 0)
+			if (locals.get(i).getName().equals(localname))
 				return i;
-		
 		return -1;
 	}
 
@@ -365,7 +355,7 @@ public class ProductionClass implements Production {
 	public boolean hasCollabInBlacklist(String starname, String collabname) {
 		Star s = (Star)users.get(indexOfUser(starname));
 		User c = users.get(indexOfUser(collabname));
-		return s.isUserInBlackList(c);
+		return s.isUserInBlacklist(c);
 	}
 
 
@@ -379,9 +369,50 @@ public class ProductionClass implements Production {
 		while(it.hasNext()) {
 			Recording rec = it.next();
 			if(rec.hasCollab(starname) && rec.hasCollab(collabname))
-				recSuspended++;
+				if(!rec.isSuspended()) {
+					rec.toggleSuspension();
+					recSuspended++;
+				}
 		}	
 		return recSuspended;
 	}
+
+
+	@Override
+	public int removeCollabOfBlacklist(String starname, String collabname) {
+		Star s = (Star)users.get(indexOfUser(starname));
+		User c = users.get(indexOfUser(collabname));
+		s.removeUserBlacklist(c);
+		int recActivated = 0;
+		Iterator<Recording> it = listRecordings();
+		while(it.hasNext()) {
+			Recording rec = it.next();
+			if(rec.hasCollab(starname) && rec.hasCollab(collabname))
+				if(rec.isSuspended()) {
+					rec.toggleSuspension();
+					recActivated++;
+				}
+		}	
+		return recActivated;
+	}
+	
+	@Override
+	public Iterator<Recording> getRecCollectionByUser(User user) {
+		Iterator<Recording> it = listRecordingsByStatus(RecordingStatusEnum.SCHEDULED);
+		Array<Recording> userRec = new ArrayClass<Recording>(DEFAULT_SIZE);
+		while(it.hasNext()) {
+			Recording rec = it.next();
+			if(rec.hasCollab(user.getName()))
+				userRec.insertLast(rec);
+		}
+		return userRec.iterator();
+	}
+	
+//	@Override
+//	public Producer getMainProducerOfRec(Recording rec) {		//TODO not used. Remove in the end.
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+	
 
 }

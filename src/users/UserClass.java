@@ -17,7 +17,7 @@ public abstract class UserClass implements User {
 	/**
 	 * Collaborator's cost charged per hour.
 	 */
-	private float hourlyCost;
+	private int hourlyCost;
 	
 	/**
 	 * Collaborator's calendar with scheduled recordings dates.
@@ -29,7 +29,7 @@ public abstract class UserClass implements User {
 	 * @param hourlyCost cost per hour charged by the collaborator.
 	 * @param username collaborator's name.
 	 */
-	protected UserClass(float hourlyCost, String username) {
+	protected UserClass(int hourlyCost, String username) {
 		this.username = username;
 		this.hourlyCost = hourlyCost;
 		calendar = new ArrayClass<LocalDateTime>();	//with default size of 50
@@ -40,7 +40,7 @@ public abstract class UserClass implements User {
 		return username;
 	}
 	
-	public float getHourlyCost() {
+	public int getHourlyCost() {
 		return hourlyCost;
 	}
 	

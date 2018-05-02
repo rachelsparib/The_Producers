@@ -15,12 +15,12 @@ public class ActorClass extends UserClass implements Actor {
 	 * @param hourlyCost actor's cost charged per hour.
 	 * @param username name of the actor.
 	 */
-	public ActorClass(float hourlyCost, String username) {
+	public ActorClass(int hourlyCost, String username) {
 		super(hourlyCost, username);
 	}
 
 	@Override
 	public String toString() {
-		return UserTypeEnum.ACTOR.getName() + " " + NotorietyTypeEnum.NORMAL.getName() + getName() + " " + getHourlyCost();
+		return UserTypeEnum.ACTOR.getName() + " " + NotorietyTypeEnum.NORMAL.getName() + " " + getName() + " " + getHourlyCost();
 	}
 }

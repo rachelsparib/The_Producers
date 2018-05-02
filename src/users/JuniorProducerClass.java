@@ -13,12 +13,12 @@ public class JuniorProducerClass extends ProducerClass implements Producer {
 	 * @param hourlyCost junior producer's cost charged per hour.
 	 * @param username name of the junior producer.
 	 */
-	public JuniorProducerClass(float hourlyCost, String username) {
+	public JuniorProducerClass(int hourlyCost, String username) {
 		super(hourlyCost, username);
 	}
 
 	@Override
 	public String toString() {
-		return UserTypeEnum.PRODUCER.getName()+ " " + UserTypeEnum.JUNIOR.getName() + getName() + " " + getHourlyCost();
+		return UserTypeEnum.PRODUCER.getName()+ " " + UserTypeEnum.JUNIOR.getName() + " " + getName() + " " + getHourlyCost();
 	}
 }

@@ -18,12 +18,12 @@ public interface Star extends User {
 	 * @param u collaborator turned friend.
 	 * @return <code>true</code> if collaborator was removed or <code>false</code> if it didn't exist in the collection.
 	 */
-	public boolean removedUserBlacklist(User u);
+	public boolean removeUserBlacklist(User u);
 	
 	/**
 	 * Checks if a collaborator is in the star's blacklist.
 	 * @param u a collaborator.
 	 * @return <code>true</code> if collaborator was removed or <code>false</code> if it didn't exist in the collection.
 	 */
-	public boolean isUserInBlackList(User u);
+	public boolean isUserInBlacklist(User u);
 }

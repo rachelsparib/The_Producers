@@ -24,10 +24,4 @@ public interface Local {
 	 * @return information of the local.
 	 */
 	String toString();
-
-	/**
-	 * Test if the locals are equal.
-	 * @return true if the locals are equals. 
-	 */
-	boolean equals(Local local);
 }

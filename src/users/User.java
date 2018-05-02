@@ -21,7 +21,7 @@ public interface User {
 	 * Collaborator's cost charged per hour.
 	 * @return cost charged per hour by the collaborator.
 	 */
-	float getHourlyCost();
+	int getHourlyCost();
 	
 	/**
 	 * Returns collaborator's information.

@@ -3,6 +3,7 @@ package users;
 import enums.NotorietyTypeEnum;
 import enums.UserTypeEnum;
 import util.Array;
+import util.ArrayClass;
 
 /**
  * An implementation of a director with star notoriety.
@@ -20,13 +21,14 @@ public class DirectorStarClass extends DirectorClass implements Director, Star {
 	 * @param hourlyCost actor's cost charged per hour.
 	 * @param username name of the actor.
 	 */
-	public DirectorStarClass(float hourlyCost, String username) {
+	public DirectorStarClass(int hourlyCost, String username) {
 		super(hourlyCost, username);
+		blacklist = new ArrayClass<User>();
 	}
 	
 	@Override
 	public String toString() {	//method redefinition from DirectorClass
-		return UserTypeEnum.DIRECTOR.getName() + " " +  NotorietyTypeEnum.STAR.getName() + getName() + " " + getHourlyCost();
+		return UserTypeEnum.DIRECTOR.getName() + " " + NotorietyTypeEnum.STAR.getName()+ " " + getName() + " " + getHourlyCost();
 	}
 	
 	@Override
@@ -35,12 +37,12 @@ public class DirectorStarClass extends DirectorClass implements Director, Star {
 	}
 	
 	@Override
-	public boolean removedUserBlacklist(User u) {
+	public boolean removeUserBlacklist(User u) {
 		return blacklist.remove(u);
 	}
 	
 	@Override
-	public boolean isUserInBlackList(User u) {
+	public boolean isUserInBlacklist(User u) {		
 		return blacklist.searchIndexOf(u) >= 0;
 	}
 }

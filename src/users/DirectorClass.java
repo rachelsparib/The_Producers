@@ -15,12 +15,12 @@ public class DirectorClass extends UserClass implements Director {
 	 * @param hourlyCost director's cost charged per hour.
 	 * @param username name of the director.
 	 */
-	public DirectorClass(float hourlyCost, String username) {
+	public DirectorClass(int hourlyCost, String username) {
 		super(hourlyCost, username);
 	}
 
 	@Override
 	public String toString() {
-		return UserTypeEnum.DIRECTOR.getName() + " " +  NotorietyTypeEnum.NORMAL.getName() + getName() + " " + getHourlyCost();
+		return UserTypeEnum.DIRECTOR.getName() + " " +  NotorietyTypeEnum.NORMAL.getName() + " " + getName() + " " + getHourlyCost();
 	}
 }

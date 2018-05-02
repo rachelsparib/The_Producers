@@ -162,18 +162,12 @@ public interface Production {
 	void changeRecordingStatus(String localname, LocalDateTime start, RecordingStatusEnum status); // getRecording in Main
 	
 	/**
-	 * Returns a collection of recordings with status <code>status</code>.
-	 * @param status of the recording.
+	 * Returns an iterator for the collection of recordings with status <code>status</code>.
+	 * @param status status of the recording.
 	 * @return collection of recordings with status <code>status</code>.
 	 */
-	Iterator<Recording> getRecCollectionByStatus(RecordingStatusEnum status);
+	Iterator<Recording> listRecordingsByStatus(RecordingStatusEnum status);
 	
-	/**
-	 * Returns a collection of recordings from a specific <code>user</code>.
-	 * @param user that we want to find recording for.
-	 * @return collection of recordings with a specific <code>user</code>.
-	 */
-	public Iterator<Recording> getRecCollectionByUser(User user);
 	
 	/**
 	 * Checks if the recording has a conflict with any other recording.
@@ -192,13 +186,6 @@ public interface Production {
 	 */
 	boolean hasProducerPriority(String localname, LocalDateTime start);
 	
-//	/**
-//	 * Returns main producer of the recording session <code>rec</code>.
-//	 * @param name of the local of recording.
-//	 * @param start instant of time of the beginning of the recording.
-//	 * @return main producer of the recording session.
-//	 */
-//	Producer getMainProducerOfRec(String localname, LocalDateTime start);	//TODO not used. Remove in the end
 
 	/**
 	 * Returns the conflict recording of the recording with local's name <code>localname</code> and starting date <code>start</code> or null if it doesn't exists any.
@@ -235,33 +222,46 @@ public interface Production {
 	 * Adds a collaborator with name <code>collabname</code> to  the blacklist of the star with name <code>starname</code>.
 	 * @param starname name of the star.
 	 * @param collabname name of the collaborator.
+	 * @return number of recordings suspended in result of adding the collaborator to the blacklist.
 	 * pre: !hasCollabInBlacklist(starname, collabname)
 	 */
 	int addCollabToBlacklist(String starname, String collabname);
 	
 	
+	/**
+	 * Removes a collaborator with name <code>collabname</code> to  the blacklist of the star with name <code>starname</code>.
+	 * @param starname name of the star.
+	 * @param collabname name of the collaborator.
+	 * @return number of recordings whose suspension was lifted.
+	 * pre: !hasCollabInBlacklist(starname, collabname)
+	 */
+	int removeCollabOfBlacklist(String starname, String collabname);
 	
+	/**
+	 * Returns a collection of recordings from a specific <code>user</code>.
+	 * @param user that we want to find recording for.
+	 * @return collection of recordings with a specific <code>user</code>.
+	 */
+	public Iterator<Recording> getRecCollectionByUser(User user);
 	
 	
 	
 //	boolean hasRescheduledAnotherRecording(String localname, LocalDateTime start);	//TODO
 	
+//	/**
+//	 * Returns main producer of the recording session <code>rec</code>.
+//	 * @param name of the local of recording.
+//	 * @param start instant of time of the beginning of the recording.
+//	 * @return main producer of the recording session.
+//	 */
+//	Producer getMainProducerOfRec(String localname, LocalDateTime start);	//TODO not used. Remove in the end
 	
-	//removeUserFromBlacklist(username)	//use getUser(username); @Pre: hasUser
+	
+	
 	//listUserBlacklist(username)
 	//hasUserInRecording(username)
 	//hasLocalInRecording(localname)
 
 	
-	
-	
-	
-//	public LocalDateTime getDate();
-
-//	public boolean isDone();
-//	
-//	public boolean isPending();
-//	
-//	public int getDuration();
 
 }

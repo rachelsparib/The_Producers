@@ -3,7 +3,6 @@ package recordings;
 import java.time.LocalDateTime;
 
 import enums.RecordingStatusEnum;
-import users.Director;
 import users.Producer;
 import users.User;
 import util.Array;
@@ -76,27 +75,11 @@ public interface Recording {
 	 */
 	boolean equals(Recording other);
 	
-//	/**
-//	 * Checks if a collaborator <code>u</code> is available between <code>start</code> and <code>end</code>.
-//	 * @param u a collaborator of the recording session.
-//	 * @param start beginning of a period of time.
-//	 * @param end ending of a period of time.
-//	 * @return if the collaborator <code>u</code> of the recording session is available between <code>start</code> and <code>end</code>.
-//	 */
-//	boolean isCollabAvailable(User u, LocalDateTime start, LocalDateTime end);
-	
-		
 	/**
 	 * Returns the first producer (main producer) in the collection of collaborators in the recordings session.
 	 * @return main producer of the recording session.
 	 */
 	Producer getProducer();	
-	
-	/**
-	 * Returns the first director (main director) in the collection of collaborators in the recordings session.
-	 * @return main director of the recording session.
-	 */
-	Director getDirector();
 	
 	/**
 	 * Returns the next available time of the collaborators involved in this recording or null if all collaborators haven't appointments.
@@ -118,8 +101,24 @@ public interface Recording {
 	boolean hasCollab(String username);
 	
 	/**
-	 * Returns the total cost of recording.
-	 * @return recording total cost.
-	 */
+	* Returns the total cost of recording.
+	* @return recording total cost.
+	*/
 	float getTotalCost();
+	
+	/**
+	 * Returns the first director (main director) in the collection of collaborators in the recordings session.
+	 * @return main director of the recording session.
+	 */
+	User getDirector();
+	
+	
+//	/**
+//	 * Checks if a collaborator <code>u</code> is available between <code>start</code> and <code>end</code>.
+//	 * @param u a collaborator of the recording session.
+//	 * @param start beginning of a period of time.
+//	 * @param end ending of a period of time.
+//	 * @return if the collaborator <code>u</code> of the recording session is available between <code>start</code> and <code>end</code>.
+//	 */
+//	boolean isCollabAvailable(User u, LocalDateTime start, LocalDateTime end);
 }

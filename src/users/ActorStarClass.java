@@ -21,14 +21,14 @@ public class ActorStarClass extends ActorClass implements Actor, Star {
 	 * @param hourlyCost actor's cost charged per hour.
 	 * @param username name of the actor.
 	 */
-	public ActorStarClass(float hourlyCost, String username) {
+	public ActorStarClass(int hourlyCost, String username) {
 		super(hourlyCost, username);
 		blacklist = new ArrayClass<User>();
 	}
 	
 	@Override
 	public String toString() { //method redefinition from ActorClass
-		return UserTypeEnum.ACTOR.getName() + " " +  NotorietyTypeEnum.STAR.getName() + getName() + " " +  getHourlyCost();
+		return UserTypeEnum.ACTOR.getName() + " " +  NotorietyTypeEnum.STAR.getName()+ " " + getName() + " " +  getHourlyCost();
 	}
 	
 	@Override
@@ -37,12 +37,12 @@ public class ActorStarClass extends ActorClass implements Actor, Star {
 	}
 	
 	@Override
-	public boolean removedUserBlacklist(User u) {
+	public boolean removeUserBlacklist(User u) {
 		return blacklist.remove(u);
 	}
 	
 	@Override
-	public boolean isUserInBlackList(User u) {
+	public boolean isUserInBlacklist(User u) {
 		return blacklist.searchIndexOf(u) >= 0;
 	}
 }
