@@ -267,21 +267,21 @@ public class Main {
 		}
 
 		// level 4
-		if (!p.hasUser(producerName)) {
+		if (!p.isProducer(producerName)) {
 			System.out.println(MessagesEnum.UNKNOWN_PRODUCER);
 			return;
 		}
 		collabs.insertLast(p.getUser(producerName));
 
 		// level 5
-		if (!p.hasUser(directorName)) {
+		if (!p.isDirector(directorName)) {
 			System.out.println(MessagesEnum.UNKNOWN_DIRECTOR);
 			return;
 		}
 		collabs.insertLast(p.getUser(directorName));
 
 		// level 6
-		if (!p.hasUser(technicianName)) {
+		if (!p.isTechnician(technicianName)) {
 			System.out.println(MessagesEnum.UNKNOWN_TECHNICIAN);
 			return;
 		}
@@ -301,7 +301,7 @@ public class Main {
 		}
 
 		// level 8
-		if (p.hasBlacklistConflict(collabsName) && !p.hasRecording(localname, start)) {
+		if (p.hasBlacklistConflict(collabsName)) {
 			System.out.println(MessagesEnum.RECORD_STAR_PENDENT);
 			p.addRecording(localname, collabs, start, duration);
 			if (!p.isRecordingSuspended(localname, start)) // suspends recording

@@ -242,23 +242,24 @@ public interface Production {
 	 */
 	Iterator<Recording> getRecCollectionByUser(User user);
 	
+	/**
+	 * Checks if collaborator is a producer.
+	 * @param collabname name of the collaborator to check.
+	 * @return true if it is.
+	 */
+	boolean isProducer(String collabname);
 	
-//	boolean hasRescheduledAnotherRecording(String localname, LocalDateTime start);	//TODO
-	
-//	/**
-//	 * Returns main producer of the recording session <code>rec</code>.
-//	 * @param name of the local of recording.
-//	 * @param start instant of time of the beginning of the recording.
-//	 * @return main producer of the recording session.
-//	 */
-//	Producer getMainProducerOfRec(String localname, LocalDateTime start);	//TODO not used. Remove in the end
-	
-	
-	
-	//listUserBlacklist(username)
-	//hasUserInRecording(username)
-	//hasLocalInRecording(localname)
+	/**
+	 * Checks if collaborator is a director.
+	 * @param collabname name of the collaborator to check.
+	 * @return true if it is.
+	 */
+	boolean isDirector(String collabname);
 
-	
-
+	/**
+	 * Checks if collaborator is a technician.
+	 * @param collabname name of the collaborator to check.
+	 * @return true if it is.
+	 */
+	boolean isTechnician(String collabname);
 }

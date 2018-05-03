@@ -200,14 +200,20 @@ public class ProductionClass implements Production {
 	@Override
 	public boolean hasBlacklistConflict(Array<String> collabsName) {
 		Iterator<User> it = getUserCollection(collabsName).iterator();
+		
 		while (it.hasNext()) {
 			User u = it.next();
 			if (u instanceof Star) {
-				for (int i = 0; i < collabsName.size(); i++)
-					if (((Star) u).isUserInBlacklist(getUser(collabsName.get(i))))
+				Star star = (Star)u;
+				
+				for (int i = 0; i < collabsName.size(); i++) {
+					User collab = getUser(collabsName.get(i));
+					if (star.isUserInBlacklist(collab))
 						return true;
+				}
 			}
 		}
+		
 		return false;
 	}
 
@@ -513,6 +519,39 @@ public class ProductionClass implements Production {
 		else
 			return true;
 
+	}
+
+	@Override
+	public boolean isProducer(String collabname) {
+		int index = indexOfUser(collabname);
+		if (index < 0)
+			return false;
+		
+		User user = getUser(collabname);
+		
+		return (user instanceof Producer);
+	}
+
+	@Override
+	public boolean isDirector(String collabname) {
+		int index = indexOfUser(collabname);
+		if (index < 0)
+			return false;
+		
+		User user = getUser(collabname);
+		
+		return (user instanceof Director);
+	}
+
+	@Override
+	public boolean isTechnician(String collabname) {
+		int index = indexOfUser(collabname);
+		if (index < 0)
+			return false;
+		
+		User user = getUser(collabname);
+		
+		return (user instanceof Technician);
 	}
 
 }
