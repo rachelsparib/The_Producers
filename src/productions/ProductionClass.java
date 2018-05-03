@@ -54,7 +54,7 @@ public class ProductionClass implements Production {
 			if (notoriety == NotorietyTypeEnum.NORMAL)
 				user = new ActorClass(hourlyCost, username);
 			else {
-				if (notoriety == NotorietyTypeEnum.STAR) 
+				if (notoriety == NotorietyTypeEnum.STAR)
 					user = new ActorStarClass(hourlyCost, username);
 			}
 			break;
@@ -111,7 +111,7 @@ public class ProductionClass implements Production {
 	}
 
 	@Override
-	public Local getLocal(String localname) { 
+	public Local getLocal(String localname) {
 		if (hasLocal(localname))
 			return locals.get(indexOfLocal(localname));
 		else
@@ -126,7 +126,7 @@ public class ProductionClass implements Production {
 	@Override
 	public void addRecording(String localname, Array<User> collabs, LocalDateTime start, int duration) {
 		Recording rec = new RecordingClass(getLocal(localname), collabs, start, duration);
-		
+
 		int i;
 		for (i = 0; i < recordings.size(); i++) {
 			Recording currentRecording = recordings.get(i);
@@ -168,7 +168,7 @@ public class ProductionClass implements Production {
 	}
 
 	@Override
-	public Recording getRecording(String localname, LocalDateTime start) { 
+	public Recording getRecording(String localname, LocalDateTime start) {
 		return recordings.get(indexOfRecording(localname, start));
 	}
 
@@ -252,16 +252,16 @@ public class ProductionClass implements Production {
 					&& isOverlapping(start, duration, record.getStartDate(), record.getDuration()))
 				return true;
 		}
-		
+
 		// check if any collab has calendar collisions.
 		Iterator<User> it2 = collabs.iterator();
 		while (it2.hasNext()) {
 			User user = it2.next();
-			
+
 			Iterator<Recording> it3 = getRecCollectionByUser(user);
 			while (it3.hasNext()) {
 				Recording rec = it3.next();
-				
+
 				if (isOverlapping(start, duration, rec.getStartDate(), rec.getDuration()))
 					return true;
 			}
@@ -288,8 +288,9 @@ public class ProductionClass implements Production {
 		return false;
 	}
 
-	
-	@Override	//Pre: !hasRecording(localname, start) && hasRecordingConflict(localname, start) && hasProducerPriority(localname, start)))
+	@Override // Pre: !hasRecording(localname, start) &&
+				// hasRecordingConflict(localname, start) &&
+				// hasProducerPriority(localname, start)))
 	public void rescheduleOtherRecording(String localname, LocalDateTime start) {
 		Recording rec = this.getConflictingRecording(localname, start);
 		LocalDateTime olddate = rec.getStartDate();
@@ -297,18 +298,17 @@ public class ProductionClass implements Production {
 		int minutes = olddate.getMinute();
 		LocalDateTime newdate = null;
 
-		LocalDateTime date = rec.getCollabsMaxTime();	//return could be null
-		if(date == null) // maintains
+		LocalDateTime date = rec.getCollabsMaxTime(); // return could be null
+		if (date == null) // maintains
 			newdate = olddate;
 		else
 			newdate = LocalDateTime.of(date.getYear(), date.getMonthValue(), date.getDayOfMonth(), hour, minutes);
-		
-		while(hasRecordingConflict(rec.getLocal().getName(), newdate, rec.getDuration(), rec.getCollabs()))
-				newdate = newdate.plusDays(1);	//tries the next day
+
+		while (hasRecordingConflict(rec.getLocal().getName(), newdate, rec.getDuration(), rec.getCollabs()))
+			newdate = newdate.plusDays(1); // tries the next day
 		rec.rescheduleRecording(newdate);
 	}
 
-	
 	@Override
 	public boolean hasStar(String starname) {
 		int index = indexOfUser(starname);
@@ -320,44 +320,44 @@ public class ProductionClass implements Production {
 	@Override
 	public boolean hasCollabInBlacklist(String starname, String collabname) {
 		int starIndex = indexOfUser(starname);
-		if(starIndex < 0)
+		if (starIndex < 0)
 			return false;
 
 		User starUser = users.get(starIndex);
-		if(!(starUser instanceof Star))
+		if (!(starUser instanceof Star))
 			return false;
-		
-		Star s = (Star)starUser;
-		
+
+		Star s = (Star) starUser;
+
 		int collabIndex = indexOfUser(collabname);
-		if(collabIndex < 0)
+		if (collabIndex < 0)
 			return false;
-		
+
 		User c = users.get(collabIndex);
-		
+
 		return s.isUserInBlacklist(c);
 	}
 
 	@Override
 	public int addCollabToBlacklist(String starname, String collabname) {
 		int starIndex = indexOfUser(starname);
-		if(starIndex < 0)
+		if (starIndex < 0)
 			return 0;
-		
+
 		User starUser = users.get(starIndex);
-		if(!(starUser instanceof Star))
+		if (!(starUser instanceof Star))
 			return 0;
-		
-		Star s = (Star)starUser;
-		
+
+		Star s = (Star) starUser;
+
 		int collabIndex = indexOfUser(collabname);
-		if(collabIndex < 0)
+		if (collabIndex < 0)
 			return 0;
-		
+
 		User c = users.get(collabIndex);
-		
+
 		s.addUserBlacklist(c);
-		
+
 		int recSuspended = 0;
 		Iterator<Recording> it = listRecordings();
 		while (it.hasNext()) {
@@ -377,15 +377,23 @@ public class ProductionClass implements Production {
 		User c = users.get(indexOfUser(collabname));
 		s.removeUserBlacklist(c);
 		int recActivated = 0;
-		Iterator<Recording> it = listRecordings();
+		Iterator<Recording> it = listRecordingsByStatus(RecordingStatusEnum.SCHEDULED);
 		while (it.hasNext()) {
 			Recording rec = it.next();
-			if (rec.hasCollab(starname) && rec.hasCollab(collabname))
-				if (rec.isSuspended()) {
+			if (rec.hasCollab(starname) && rec.hasCollab(collabname)) {
+				Array<String> collabNames = new ArrayClass<String>();
+
+				Iterator<User> it2 = rec.getCollabs().iterator();
+				while (it2.hasNext())
+					collabNames.insertLast(it2.next().getName());
+
+				if (rec.isSuspended() && !hasBlacklistConflict(collabNames)) {
 					rec.toggleSuspension();
 					recActivated++;
 				}
+			}
 		}
+		
 		return recActivated;
 	}
 
@@ -400,30 +408,36 @@ public class ProductionClass implements Production {
 		}
 		return userRec.iterator();
 	}
-	
-	
-	
+
 	// Private methods
 	/**
-	 * Returns the conflicting recording of the recording with local's name <code>localname</code> and starting date <code>start</code> or null if it doesn't exists any.
-	 * @param name of the local of recording.
-	 * @param start instant of time of the beginning of the recording.
-	 * @return recording that is conflicting with the one given or null if it doesn't exists any.
+	 * Returns the conflicting recording of the recording with local's name
+	 * <code>localname</code> and starting date <code>start</code> or null if it
+	 * doesn't exists any.
+	 * 
+	 * @param name
+	 *            of the local of recording.
+	 * @param start
+	 *            instant of time of the beginning of the recording.
+	 * @return recording that is conflicting with the one given or null if it
+	 *         doesn't exists any.
 	 * @pre hasRecordingConflict(localname, start)
 	 */
-	private Recording getConflictingRecording(String localname, LocalDateTime start) {	//Pre: hasRecordingConflict(localname, start)
+	private Recording getConflictingRecording(String localname, LocalDateTime start) { // Pre:
+																						// hasRecordingConflict(localname,
+																						// start)
 		Iterator<Recording> it = listRecordings();
-		if(hasRecording(localname, start)) {
+		if (hasRecording(localname, start)) {
 			Recording rec = getRecording(localname, start);
-			while(it.hasNext()) {
+			while (it.hasNext()) {
 				Recording other = it.next();
-				if(rec.equals(other))
+				if (rec.equals(other))
 					return other;
 			}
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Searches for the position of the collaborator with name
 	 * <code>username</code> in the array.
@@ -447,8 +461,8 @@ public class ProductionClass implements Production {
 	 * 
 	 * @param localname
 	 *            local's name of the recording to be found in the array.
-	 * @param start instant
-	 *            of time of the beginning of the recording.
+	 * @param start
+	 *            instant of time of the beginning of the recording.
 	 * @return the position of the recording in the array, or <code>-1</code> in
 	 *         case the recording don't exists.
 	 */
@@ -476,14 +490,19 @@ public class ProductionClass implements Production {
 		return -1;
 	}
 
-	
 	/**
 	 * Checks if an interval of time is overlapping another interval of time.
-	 * @param data1 an instant of time for comparison.
-	 * @param duration1 an interval of time in minutes.
-	 * @param data2 an instant of time for comparison.
-	 * @param duration2 an interval of time in minutes.
-	 * @return <code>true</code> if an interval of time is overlapping another interval of time or <code>false</code> otherwise.
+	 * 
+	 * @param data1
+	 *            an instant of time for comparison.
+	 * @param duration1
+	 *            an interval of time in minutes.
+	 * @param data2
+	 *            an instant of time for comparison.
+	 * @param duration2
+	 *            an interval of time in minutes.
+	 * @return <code>true</code> if an interval of time is overlapping another
+	 *         interval of time or <code>false</code> otherwise.
 	 */
 	private boolean isOverlapping(LocalDateTime data1, int duration1, LocalDateTime data2, int duration2) {
 		LocalDateTime end1 = data1.plusMinutes(duration1);
@@ -495,6 +514,5 @@ public class ProductionClass implements Production {
 			return true;
 
 	}
-
 
 }
