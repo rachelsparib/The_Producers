@@ -381,8 +381,11 @@ public class ProductionClass implements Production {
 	public int removeCollabOfBlacklist(String starname, String collabname) {
 		Star s = (Star) users.get(indexOfUser(starname));
 		User c = users.get(indexOfUser(collabname));
+		
 		s.removeUserBlacklist(c);
+		
 		int recActivated = 0;
+		
 		Iterator<Recording> it = listRecordingsByStatus(RecordingStatusEnum.SCHEDULED);
 		while (it.hasNext()) {
 			Recording rec = it.next();

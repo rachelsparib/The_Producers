@@ -299,6 +299,10 @@ public class Main {
 
 			collabs.insertLast(p.getUser(collabName));
 		}
+		
+		collabsName.insertLast(directorName);
+		collabsName.insertLast(producerName);
+		collabsName.insertLast(technicianName);
 
 		// level 8
 		if (p.hasBlacklistConflict(collabsName)) {
@@ -378,6 +382,7 @@ public class Main {
 	private static void reconcile(Scanner in, Production p) {
 		String starname = in.nextLine();
 		String collabname = in.nextLine();
+		
 		if (!p.hasStar(starname))
 			System.out.println(starname + MessagesEnum.INVALID_STAR);
 		else {
@@ -387,7 +392,6 @@ public class Main {
 				int num = p.removeCollabOfBlacklist(starname, collabname);
 				System.out.println(starname + " <3 " + collabname + ". " + num + " gravacoes salvas!");
 			}
-
 		}
 	}
 
