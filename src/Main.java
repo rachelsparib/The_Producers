@@ -3,6 +3,7 @@ import java.util.Scanner;
 import enums.*;
 import productions.*;
 import util.*;
+import users.Producer;
 import users.User;
 import recordings.Local;
 import recordings.Recording;
@@ -246,88 +247,120 @@ public class Main {
 
 		LocalDateTime start = LocalDateTime.of(year, month, dayOfMonth, hour, minutes);
 
+		aux_schedule(localname, start, duration, producerName, directorName, technicianName, collabsName, p, false);
+	}
+
+	private static void aux_schedule(String localname, LocalDateTime start, int duration, String producerName,
+			String directorName, String technicianName, Array<String> collabsName, Production p, boolean silent) {
 		Array<User> collabs = new ArrayClass<>();
 
-		// level 1
-		if (!p.hasLocal(localname)) {
-			System.out.println(MessagesEnum.UNKNOWN_LOCAL);
-			return;
-		}
-
-		// level 2
-		if (p.isBeforeLastRecorded(start)) {
-			System.out.println(MessagesEnum.INVALID_DATE);
-			return;
-		}
-
-		// level 3
-		if (duration < 0) {
-			System.out.println(MessagesEnum.INVALID_DURATION);
-			return;
-		}
-
-		// level 4
-		if (!p.isProducer(producerName)) {
-			System.out.println(MessagesEnum.UNKNOWN_PRODUCER);
-			return;
-		}
-		collabs.insertLast(p.getUser(producerName));
-
-		// level 5
-		if (!p.isDirector(directorName)) {
-			System.out.println(MessagesEnum.UNKNOWN_DIRECTOR);
-			return;
-		}
-		collabs.insertLast(p.getUser(directorName));
-
-		// level 6
-		if (!p.isTechnician(technicianName)) {
-			System.out.println(MessagesEnum.UNKNOWN_TECHNICIAN);
-			return;
-		}
-		collabs.insertLast(p.getUser(technicianName));
-
-		// level 7
-		Iterator<String> it = collabsName.iterator();
-		while (it.hasNext()) {
-			String collabName = it.next();
-
-			if (!p.hasUser(collabName)) {
-				System.out.println(MessagesEnum.UNKNOWN_COLLAB);
-				return;
-			}
-
-			collabs.insertLast(p.getUser(collabName));
-		}
-		
-		collabsName.insertLast(directorName);
-		collabsName.insertLast(producerName);
-		collabsName.insertLast(technicianName);
-
-		// level 8
-		if (p.hasBlacklistConflict(collabsName)) {
-			System.out.println(MessagesEnum.RECORD_STAR_PENDENT);
-			p.addRecording(localname, collabs, start, duration);
-			if (!p.isRecordingSuspended(localname, start)) // suspends recording
-				p.toggleRecordingSuspension(localname, start);
+		if (!p.hasLocal(localname)) { // level 1
+			if (!silent)
+				System.out.println(MessagesEnum.UNKNOWN_LOCAL);
+		} else if (p.isBeforeLastRecorded(start)) { // level 2
+			if (!silent)
+				System.out.println(MessagesEnum.INVALID_DATE);
+		} else if (duration < 0) { // level 3
+			if (!silent)
+				System.out.println(MessagesEnum.INVALID_DURATION);
+		} else if (!p.isProducer(producerName)) { // level 4
+			if (!silent)
+				System.out.println(MessagesEnum.UNKNOWN_PRODUCER);
+		} else if (!p.isDirector(directorName)) { // level 5
+			if (!silent)
+				System.out.println(MessagesEnum.UNKNOWN_DIRECTOR);
+		} else if (!p.isTechnician(technicianName)) {
+			if (!silent)
+				System.out.println(MessagesEnum.UNKNOWN_TECHNICIAN); // level 6
 		} else {
 
-			// level 9
-			if (p.hasRecordingConflict(localname, start, duration, collabs)
-					&& !p.hasProducerPriority(localname, start)) {
-				System.out.println(MessagesEnum.RECORD_CONFLICT);
+			// level 7
+			Iterator<String> it = collabsName.iterator();
+			while (it.hasNext()) {
+				String collabName = it.next();
+
+				if (!p.hasUser(collabName)) {
+					if (!silent)
+						System.out.println(MessagesEnum.UNKNOWN_COLLAB);
+
+					return;
+				}
+
+				collabs.insertLast(p.getUser(collabName));
+			}
+
+			Producer producer = (Producer) p.getUser(producerName);
+			collabs.insertLast(producer);
+			collabs.insertLast(p.getUser(directorName));
+			collabs.insertLast(p.getUser(technicianName));
+
+			collabsName.insertLast(directorName);
+			collabsName.insertLast(producerName);
+			collabsName.insertLast(technicianName);
+
+			// level 8
+			if (p.hasBlacklistConflict(collabsName)) {
+				if (!silent)
+					System.out.println(MessagesEnum.RECORD_STAR_PENDENT);
+
+				p.addRecording(localname, collabs, start, duration);
+				if (!p.isRecordingSuspended(localname, start)) // suspends
+																// recording
+					p.toggleRecordingSuspension(localname, start);
 			} else {
 
-				// level 10
+				// level 9
 				if (p.hasRecordingConflict(localname, start, duration, collabs)
-						&& p.hasProducerPriority(localname, start) && !p.hasRecording(localname, start)) {
-					p.rescheduleOtherRecording(localname, start);
-					p.addRecording(localname, collabs, start, duration);
-					System.out.println(MessagesEnum.RECORD_CAUSED_RESCHED);
+						&& !p.hasProducerPriority(producer, localname, start, duration)) {
+					if (!silent)
+						System.out.println(MessagesEnum.RECORD_CONFLICT);
 				} else {
-					// success
-					p.addRecording(localname, collabs, start, duration);
-					System.out.println(MessagesEnum.RECORD_ADDED_SUCCESS);
+
+					// level 10
+					if (p.hasRecordingConflict(localname, start, duration, collabs)
+							&& p.hasProducerPriority(producer, localname, start, duration)) {
+
+						Iterator<Recording> it2 = p.getRecordings(start, duration);
+
+						// remove all conflicting recordings
+						while (it2.hasNext()) {
+							Recording rec = it2.next();
+
+							p.removeRecording(rec);
+						}
+
+						// add our recording
+						p.addRecording(localname, collabs, start, duration);
+
+						// add all previously removed recordings
+						it2.init();
+						while (it2.hasNext()) {
+							Recording rec = it2.next();
+
+							Array<String> cNames = new ArrayClass<>();
+							Iterator<User> it3 = rec.getCollabs().iterator();
+							while (it3.hasNext()) {
+								User user = it3.next();
+
+								if (user != rec.getProducer() && user != rec.getDirector()
+										&& user != rec.getTechician())
+									cNames.insertLast(user.getName());
+							}
+
+							aux_schedule(rec.getLocal().getName(), rec.getStartDate().plusDays(1), rec.getDuration(),
+									rec.getProducer().getName(), rec.getDirector().getName(),
+									rec.getTechician().getName(), cNames, p, true);
+						}
+
+						if (!silent)
+							System.out.println(MessagesEnum.RECORD_CAUSED_RESCHED);
+					} else {
+						// success
+						p.addRecording(localname, collabs, start, duration);
+
+						if (!silent)
+							System.out.println(MessagesEnum.RECORD_ADDED_SUCCESS);
+					}
 				}
 			}
 		}
@@ -345,29 +378,29 @@ public class Main {
 	private static void grumpy(Scanner in, Production p) {
 		String starname = in.nextLine();
 		String collabname = in.nextLine();
-		
-		//level 1
-		if(!p.hasStar(starname)){
+
+		// level 1
+		if (!p.hasStar(starname)) {
 			System.out.println(starname + MessagesEnum.INVALID_STAR);
 			return;
 		}
-		
-		//level 2 
-		if(!p.hasUser(collabname)){
+
+		// level 2
+		if (!p.hasUser(collabname)) {
 			System.out.println(collabname + MessagesEnum.INVALID_COLLAB);
 			return;
 		}
-		
-		//level 3
-		if(p.hasCollabInBlacklist(starname, collabname)){
+
+		// level 3
+		if (p.hasCollabInBlacklist(starname, collabname)) {
 			System.out.println(MessagesEnum.INVALID_ADD_BLACKLIST);
 			return;
 		}
-		
+
 		int num = p.addCollabToBlacklist(starname, collabname);
-		System.out.println(starname + " colocou " + collabname + " na sua lista negra, suspendendo " + num
-				+ " gravacoes.");
-		
+		System.out.println(
+				starname + " colocou " + collabname + " na sua lista negra, suspendendo " + num + " gravacoes.");
+
 	}
 
 	/**
@@ -382,12 +415,12 @@ public class Main {
 	private static void reconcile(Scanner in, Production p) {
 		String starname = in.nextLine();
 		String collabname = in.nextLine();
-		
+
 		if (!p.hasStar(starname))
 			System.out.println(starname + MessagesEnum.INVALID_STAR);
 		else {
 			if (p.hasUser(collabname) && !p.hasCollabInBlacklist(starname, collabname) || !p.hasUser(collabname))
-				System.out.println(MessagesEnum.NOT_IN_BLACKLIST + collabname +".");
+				System.out.println(MessagesEnum.NOT_IN_BLACKLIST + collabname + ".");
 			else {
 				int num = p.removeCollabOfBlacklist(starname, collabname);
 				System.out.println(starname + " <3 " + collabname + ". " + num + " gravacoes salvas!");
@@ -430,7 +463,7 @@ public class Main {
 
 			while (it.hasNext()) {
 				Recording rec = it.next();
-				
+
 				String state = "";
 				if (rec.isCanceled())
 					state = " Cancelada!";
@@ -464,7 +497,7 @@ public class Main {
 					LocalDateTime date = record.getStartDate();
 
 					System.out.printf("%d %d %d; %s; %s.\n", date.getYear(), date.getMonthValue(), date.getDayOfMonth(),
-record.getProducer().getName(), record.getDirector().getName());
+							record.getProducer().getName(), record.getDirector().getName());
 
 					totalCost += record.getTotalCost();
 					hasRecordings = true;
@@ -497,8 +530,8 @@ record.getProducer().getName(), record.getDirector().getName());
 					Recording record = it.next();
 					if (record.hasCollab(collab.getName())) {
 						LocalDateTime date = record.getStartDate();
-						System.out.printf("%d %d %d; %s; %s.\n", date.getYear(), date.getMonthValue(), date.getDayOfMonth(),
-	record.getProducer().getName(), record.getDirector().getName());
+						System.out.printf("%d %d %d; %s; %s.\n", date.getYear(), date.getMonthValue(),
+								date.getDayOfMonth(), record.getProducer().getName(), record.getDirector().getName());
 						totalCost += record.getTotalCost();
 					}
 				}

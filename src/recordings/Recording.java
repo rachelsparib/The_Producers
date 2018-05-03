@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import enums.RecordingStatusEnum;
 import users.Director;
 import users.Producer;
+import users.Technician;
 import users.User;
 import util.Array;
 
@@ -130,6 +131,7 @@ public interface Recording {
 	 */
 	String toString();
 	
+	Technician getTechician();
 	
 //	/**
 //	 * Checks if a collaborator <code>u</code> is available between <code>start</code> and <code>end</code>.

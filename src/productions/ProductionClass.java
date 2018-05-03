@@ -200,12 +200,12 @@ public class ProductionClass implements Production {
 	@Override
 	public boolean hasBlacklistConflict(Array<String> collabsName) {
 		Iterator<User> it = getUserCollection(collabsName).iterator();
-		
+
 		while (it.hasNext()) {
 			User u = it.next();
 			if (u instanceof Star) {
-				Star star = (Star)u;
-				
+				Star star = (Star) u;
+
 				for (int i = 0; i < collabsName.size(); i++) {
 					User collab = getUser(collabsName.get(i));
 					if (star.isUserInBlacklist(collab))
@@ -213,7 +213,7 @@ public class ProductionClass implements Production {
 				}
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -277,21 +277,27 @@ public class ProductionClass implements Production {
 	}
 
 	@Override
-	public boolean hasProducerPriority(String localname, LocalDateTime start) { // pre:
-																				// hasRecordingConflict(localname,
-																				// start)
-		Iterator<Recording> it = listRecordings();
-		Recording rec = null;
-		if (hasRecording(localname, start)) {
-			rec = getRecording(localname, start);
-			while (it.hasNext()) {
-				Recording other = it.next();
-				if (((rec.getProducer() instanceof SeniorProducerClass)
-						&& ((other.getProducer() instanceof SeniorProducerClass))))
-					return true;
+	public boolean hasProducerPriority(Producer producer, String localname, LocalDateTime start, int duration) { // pre:
+		Iterator<Recording> it = listRecordingsByStatus(RecordingStatusEnum.SCHEDULED);
+		while (it.hasNext()) {
+			Recording rec = it.next();
+
+			if (isOverlapping(start, duration, rec.getStartDate(), rec.getDuration())) {
+				Producer otherProducer = rec.getProducer();
+				if (producer instanceof JuniorProducerClass) {
+					if (otherProducer instanceof SeniorProducerClass)
+						return false;
+					
+					if (otherProducer instanceof JuniorProducerClass)
+						return false;
+				} else {
+					if (otherProducer instanceof SeniorProducerClass)
+						return false;
+				}
 			}
 		}
-		return false;
+
+		return true;
 	}
 
 	@Override // Pre: !hasRecording(localname, start) &&
@@ -381,11 +387,11 @@ public class ProductionClass implements Production {
 	public int removeCollabOfBlacklist(String starname, String collabname) {
 		Star s = (Star) users.get(indexOfUser(starname));
 		User c = users.get(indexOfUser(collabname));
-		
+
 		s.removeUserBlacklist(c);
-		
+
 		int recActivated = 0;
-		
+
 		Iterator<Recording> it = listRecordingsByStatus(RecordingStatusEnum.SCHEDULED);
 		while (it.hasNext()) {
 			Recording rec = it.next();
@@ -402,7 +408,7 @@ public class ProductionClass implements Production {
 				}
 			}
 		}
-		
+
 		return recActivated;
 	}
 
@@ -529,9 +535,9 @@ public class ProductionClass implements Production {
 		int index = indexOfUser(collabname);
 		if (index < 0)
 			return false;
-		
+
 		User user = getUser(collabname);
-		
+
 		return (user instanceof Producer);
 	}
 
@@ -540,9 +546,9 @@ public class ProductionClass implements Production {
 		int index = indexOfUser(collabname);
 		if (index < 0)
 			return false;
-		
+
 		User user = getUser(collabname);
-		
+
 		return (user instanceof Director);
 	}
 
@@ -551,10 +557,34 @@ public class ProductionClass implements Production {
 		int index = indexOfUser(collabname);
 		if (index < 0)
 			return false;
-		
+
 		User user = getUser(collabname);
-		
+
 		return (user instanceof Technician);
+	}
+
+	@Override
+	public Iterator<Recording> getRecordings(LocalDateTime start, int duration) {
+		Array<Recording> records = new ArrayClass<Recording>();
+		
+		Iterator<Recording> it = listRecordingsByStatus(RecordingStatusEnum.SCHEDULED);
+		while (it.hasNext()) {
+			Recording rec = it.next();
+			
+			if (isOverlapping(start, duration, rec.getStartDate(), rec.getDuration()))
+				records.insertLast(rec);
+		}
+		
+		return records.iterator();
+	}
+
+	@Override
+	public boolean removeRecording(Recording recording) {
+		int index = indexOfRecording(recording.getLocal().getName(), recording.getStartDate());
+		if (index < 0)
+			return false;
+		
+		return recordings.removeAt(index) != null;
 	}
 
 }

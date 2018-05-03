@@ -3,6 +3,7 @@ package productions;
 import java.time.LocalDateTime;
 
 import enums.*;
+import users.Producer;
 import users.User;
 import util.*;
 import recordings.Local;
@@ -189,7 +190,7 @@ public interface Production {
 	 * @return <code>true</code> if the recording has priority over other conflicting <code>recording</code> or false otherwise.
 	 * @pre hasRecordingConflict(localname, start)
 	 */
-	boolean hasProducerPriority(String localname, LocalDateTime start);
+	boolean hasProducerPriority(Producer producer, String localname, LocalDateTime start, int duration);
 	
 	/**
 	 * Reschedules a recording that is conflicting with the recording to be scheduled to the same place and time and when all the collaborators are available.
@@ -262,4 +263,15 @@ public interface Production {
 	 * @return true if it is.
 	 */
 	boolean isTechnician(String collabname);
+	
+	/**
+	 * Returns all recordings on the time slot.
+	 * @param start
+	 * @param duration
+	 * @return
+	 */
+	Iterator<Recording> getRecordings(LocalDateTime start, int duration);
+	
+	
+	boolean removeRecording(Recording recording);
 }

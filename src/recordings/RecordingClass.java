@@ -6,6 +6,7 @@ import enums.RecordingStatusEnum;
 import users.Director;
 import users.Producer;
 import users.ProducerClass;
+import users.Technician;
 import users.User;
 import util.Array;
 import util.Iterator;
@@ -307,6 +308,19 @@ public class RecordingClass implements Recording {
 
 		return String.format("%d %d %d; %s; %s; %s.", startDate.getYear(), startDate.getMonthValue(),
 				startDate.getDayOfMonth(), local.getName(), producer.getName(), director.getName());
+	}
+
+	@Override
+	public Technician getTechician() {
+		Iterator<User> it = collabs.iterator();
+
+		while (it.hasNext()) {
+			User u = it.next();
+			if (u instanceof Technician)
+				return (Technician) u;
+		}
+
+		return null;
 	}
 
 }
