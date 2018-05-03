@@ -37,6 +37,7 @@ public interface Production {
 	 * Returns a collaborator with name <code>username</code> or null if it doesn't exists.
 	 * @param username collaborator's name.
 	 * @return collaborator with name <code>username</code> or null if it doesn't exists.
+	 * @pre hasUser(username)
 	 */
 	User getUser(String username);
 	
@@ -65,6 +66,7 @@ public interface Production {
 	 * Returns a local with name <code>localname</code> or null if doesn't exists.
 	 * @param localname name of the local.
 	 * @return local with name <code>localname</code> or null if doesn't exists.
+	 * @pre hasLocal(localname)
 	 */
 	Local getLocal(String localname);
 	
@@ -77,10 +79,10 @@ public interface Production {
 	/**
 	 * Adds a new recording session.
 	 * @param localname local's name of the recording session.
-	 * @param collabsName names of the collaborators participating in the recording.
+	 * @param collab collaborators participating in the recording.
 	 * @param start instant of time of the beginning of the recording.
 	 * @param duration recording's duration.
-	 * @pre !hasRecording(localname, start) && !isBeforeLast(start) && hasLocal(localname) && hasCollabs(collabsName)
+	 * @pre !hasRecording(localname, start) && !isBeforeLast(start) && hasLocal(localname) && hasUserCollection(collabsName)
 	 */
 	void addRecording(String localname, Array<User> collabs, LocalDateTime start, int duration);
 	
@@ -132,6 +134,7 @@ public interface Production {
 	 * Checks if exists a star's conflict in a collection of names of collaborators.
 	 * @param collabsName collection of colaborators's names.
 	 * @return <code>true</code> if there's a conflict between at least one star and other collaborator or <code>false</code> otherwise.
+	 * @pre hasUserCollection(collabsName)
 	 */
 	boolean hasBlacklistConflict(Array<String> collabsName);
 	
@@ -173,9 +176,11 @@ public interface Production {
 	 * Checks if the recording has a conflict with any other recording.
 	 * @param name of the local of recording.
 	 * @param start instant of time of the beginning of the recording.
+	 * @param duration recording's duration.
+	 * @param collab collaborators participating in the recording.
 	 * @return <code>true</code> if exists a conflict with another recording or <code>false</code> otherwise.
 	 */
-	boolean hasRecordingConflict(String localname, LocalDateTime start, int duration, Array<User> collabs);	//TODO and include situation of hasProducerPriority(RecordingRec)
+	boolean hasRecordingConflict(String localname, LocalDateTime start, int duration, Array<User> collabs);	
 	
 	/**
 	 * Checks if a recording has priority over other conflicting recording (producer of superior rank).
@@ -186,26 +191,19 @@ public interface Production {
 	 */
 	boolean hasProducerPriority(String localname, LocalDateTime start);
 	
-
 	/**
-	 * Returns the conflict recording of the recording with local's name <code>localname</code> and starting date <code>start</code> or null if it doesn't exists any.
+	 * Reschedules a recording that is conflicting with the recording to be scheduled to the same place and time and when all the collaborators are available.
 	 * @param name of the local of recording.
 	 * @param start instant of time of the beginning of the recording.
-	 * @return recording that is conflicting with the one given or null if it doesn't exists any.
+	 * @pre !hasRecording(localname, start) && hasRecordingConflict(localname, start) && hasProducerPriority(localname, start)))
 	 */
-	Recording getConflictingRecording(String localname, LocalDateTime start);
-	
-	/**
-	 * Reschedules the recording session <code>rec</code> to the same place and at a time and when all the collaborators are available
-	 * @param rec recording session to be rescheduled.
-	 * @pre hasRecording(localname, start) && (hasBlacklistConflict(collabsName) || (hasRecordingConflict(localname, start) && hasProducerPriority(localname, start))) 
-	 */
-	void rescheduleRecording(Recording rec);
+	void rescheduleOtherRecording(String localname, LocalDateTime start);
 	
 	/**
 	 * Checks if a star with name <code>starname</code> exists.
 	 * @param starname star's name.
 	 * @return <code>true</code> if a star with name <code>starname</code> exists or <code>false</code> otherwise.
+	 * @pre hasUser(starname)
 	 */
 	boolean hasStar(String starname);
 	
@@ -223,7 +221,7 @@ public interface Production {
 	 * @param starname name of the star.
 	 * @param collabname name of the collaborator.
 	 * @return number of recordings suspended in result of adding the collaborator to the blacklist.
-	 * pre: !hasCollabInBlacklist(starname, collabname)
+	 * @pre !hasCollabInBlacklist(starname, collabname) && hasUser(starname) && hasUser(collabname)
 	 */
 	int addCollabToBlacklist(String starname, String collabname);
 	
@@ -233,7 +231,7 @@ public interface Production {
 	 * @param starname name of the star.
 	 * @param collabname name of the collaborator.
 	 * @return number of recordings whose suspension was lifted.
-	 * pre: !hasCollabInBlacklist(starname, collabname)
+	 * @pre !hasCollabInBlacklist(starname, collabname) && hasUser(starname) && hasUser(collabname)
 	 */
 	int removeCollabOfBlacklist(String starname, String collabname);
 	
@@ -242,8 +240,7 @@ public interface Production {
 	 * @param user that we want to find recording for.
 	 * @return collection of recordings with a specific <code>user</code>.
 	 */
-	public Iterator<Recording> getRecCollectionByUser(User user);
-	
+	Iterator<Recording> getRecCollectionByUser(User user);
 	
 	
 //	boolean hasRescheduledAnotherRecording(String localname, LocalDateTime start);	//TODO

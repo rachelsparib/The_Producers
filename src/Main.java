@@ -239,7 +239,6 @@ public class Main {
 		in.nextLine();
 
 		Array<String> collabsName = new ArrayClass<String>();
-		;
 
 		for (int i = 0; i < numCollabs; i++) {
 			collabsName.insertLast(in.nextLine());
@@ -318,7 +317,7 @@ public class Main {
 				// level 10
 				if (p.hasRecordingConflict(localname, start, duration, collabs)
 						&& p.hasProducerPriority(localname, start) && !p.hasRecording(localname, start)) {
-					p.rescheduleRecording(p.getConflictingRecording(localname, start));
+					p.rescheduleOtherRecording(localname, start);
 					p.addRecording(localname, collabs, start, duration);
 					System.out.println(MessagesEnum.RECORD_CAUSED_RESCHED);
 				} else {
@@ -342,22 +341,29 @@ public class Main {
 	private static void grumpy(Scanner in, Production p) {
 		String starname = in.nextLine();
 		String collabname = in.nextLine();
-		if (!p.hasStar(starname))
+		
+		//level 1
+		if(!p.hasStar(starname)){
 			System.out.println(starname + MessagesEnum.INVALID_STAR);
-		else {
-			if (!p.hasUser(collabname))
-				System.out.println(collabname + MessagesEnum.INVALID_COLLAB);
-			else {
-				if (p.hasCollabInBlacklist(starname, collabname))
-					System.out.println(MessagesEnum.INVALID_ADD_BLACKLIST);
-				else {
-					int num = p.addCollabToBlacklist(starname, collabname);
-					System.out.println(starname + " colocou " + collabname + " na sua lista negra, suspendendo " + num
-							+ " gravacoes.");
-				}
-
-			}
+			return;
 		}
+		
+		//level 2 
+		if(!p.hasUser(collabname)){
+			System.out.println(collabname + MessagesEnum.INVALID_COLLAB);
+			return;
+		}
+		
+		//level 3
+		if(p.hasCollabInBlacklist(starname, collabname)){
+			System.out.println(MessagesEnum.INVALID_ADD_BLACKLIST);
+			return;
+		}
+		
+		int num = p.addCollabToBlacklist(starname, collabname);
+		System.out.println(starname + " colocou " + collabname + " na sua lista negra, suspendendo " + num
+				+ " gravacoes.");
+		
 	}
 
 	/**
@@ -375,7 +381,7 @@ public class Main {
 		if (!p.hasStar(starname))
 			System.out.println(starname + MessagesEnum.INVALID_STAR);
 		else {
-			if (p.hasCollabInBlacklist(starname, collabname) || !p.hasUser(collabname))
+			if (p.hasUser(collabname) && p.hasCollabInBlacklist(starname, collabname) || !p.hasUser(collabname))
 				System.out.println(MessagesEnum.NOT_IN_BLACKLIST + collabname);
 			else {
 				int num = p.removeCollabOfBlacklist(starname, collabname);
@@ -394,16 +400,13 @@ public class Main {
 
 			while (recording.hasNext()) {
 				Recording record = recording.next();
-				LocalDateTime date = record.getStartDate();
-				
 				String state = "";
 				if (record.isCanceled())
 					state = " Cancelada!";
 				else if (record.isSuspended())
 					state = " Suspensa!";
 
-				System.out.format("%d %d %d; %s; %s; %s.%s\n", date.getYear(), date.getMonthValue(), date.getDayOfMonth(),
-						record.getLocal().getName(), record.getProducer().getName(), record.getDirector().getName(), state);
+				System.out.println(record + state);
 
 				if (!record.isCanceled() && !record.isSuspended())
 					totalCost += record.getTotalCost();
@@ -423,10 +426,6 @@ public class Main {
 
 			while (it.hasNext()) {
 				Recording rec = it.next();
-				LocalDateTime date = rec.getStartDate();
-				Local local = rec.getLocal();
-				User producer = rec.getProducer();
-				User director = rec.getDirector();
 				
 				String state = "";
 				if (rec.isCanceled())
@@ -434,14 +433,13 @@ public class Main {
 				else if (rec.isSuspended())
 					state = " Suspensa!";
 
-				System.out.format("%d %d %d; %s; %s; %s.%s\n", date.getYear(), date.getMonthValue(), date.getDayOfMonth(),
-						local.getName(), producer.getName(), director.getName(), state);
+				System.out.println(rec + state);
 
 				totalCost += rec.getTotalCost();
 			}
 
 			int totalCostInt = Math.round(totalCost);
-			System.out.format("%d euros orcamentados.\n", totalCostInt);
+			System.out.printf("%d euros orcamentados.\n", totalCostInt);
 		}
 	}
 
@@ -461,8 +459,8 @@ public class Main {
 				if (record.getLocal().equals(l)) {
 					LocalDateTime date = record.getStartDate();
 
-					System.out.format("%d %d %d; %s; %s.\n", date.getYear(), date.getMonthValue(), date.getDayOfMonth(),
-							record.getProducer().getName(), record.getDirector().getName());
+					System.out.printf("%d %d %d; %s; %s.\n", date.getYear(), date.getMonthValue(), date.getDayOfMonth(),
+record.getProducer().getName(), record.getDirector().getName());
 
 					totalCost += record.getTotalCost();
 					hasRecordings = true;
@@ -471,9 +469,9 @@ public class Main {
 
 			if (hasRecordings) {
 				int totalCostInt = Math.round(totalCost);
-				System.out.format("%d euros orcamentados.\n", totalCostInt);
+				System.out.printf("%d euros orcamentados.\n", totalCostInt);
 			} else {
-				System.out.format("Nenhuma gravacao prevista em %s.\n", l.getName());
+				System.out.printf("Nenhuma gravacao prevista em %s.\n", l.getName());
 			}
 		}
 	}
@@ -495,16 +493,14 @@ public class Main {
 					Recording record = it.next();
 					if (record.hasCollab(collab.getName())) {
 						LocalDateTime date = record.getStartDate();
-
-						System.out.format("%d %d %d; %s; %s.\n", date.getYear(), date.getMonthValue(),
-								date.getDayOfMonth(), record.getProducer().getName(), record.getDirector().getName());
-
+						System.out.printf("%d %d %d; %s; %s.\n", date.getYear(), date.getMonthValue(), date.getDayOfMonth(),
+	record.getProducer().getName(), record.getDirector().getName());
 						totalCost += record.getTotalCost();
 					}
 				}
 
 				int totalCostInt = Math.round(totalCost);
-				System.out.format("%d euros orcamentados.\n", totalCostInt);
+				System.out.printf("%d euros orcamentados.\n", totalCostInt);
 			}
 		}
 	}
@@ -515,20 +511,13 @@ public class Main {
 			System.out.println(MessagesEnum.NO_SCHEDULE_RECORDING);
 		} else {
 			Recording rec = it.next();
-			LocalDateTime date = rec.getStartDate();
-
 			p.changeRecordingStatus(rec.getLocal().getName(), rec.getStartDate(), RecordingStatusEnum.DONE);
 
 			if (rec.isSuspended()) {
-				System.out.format("%d %d %d; %s; %s; %s. Cancelada!\n", date.getYear(), date.getMonthValue(),
-						date.getDayOfMonth(), rec.getLocal().getName(), rec.getProducer().getName(),
-						rec.getDirector().getName());
-
+				System.out.printf("%s Cancelada!\n", rec);
 				rec.toggleCanceled();
 			} else {
-				System.out.format("%d %d %d; %s; %s; %s. Gravada!\n", date.getYear(), date.getMonthValue(),
-						date.getDayOfMonth(), rec.getLocal().getName(), rec.getProducer().getName(),
-						rec.getDirector().getName());
+				System.out.printf("%s Gravada!\n", rec);
 			}
 		}
 	}

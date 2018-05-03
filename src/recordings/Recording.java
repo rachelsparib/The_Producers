@@ -124,6 +124,12 @@ public interface Recording {
 	 */
 	Director getDirector();
 	
+	/**
+	 * Returns information of the recording.
+	 * @return information of the recording.
+	 */
+	String toString();
+	
 	
 //	/**
 //	 * Checks if a collaborator <code>u</code> is available between <code>start</code> and <code>end</code>.
