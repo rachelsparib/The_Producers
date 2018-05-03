@@ -249,7 +249,8 @@ public class Main {
 
 		aux_schedule(localname, start, duration, producerName, directorName, technicianName, collabsName, p, false);
 	}
-
+	
+	// auxiliar method for recursive calling 
 	private static void aux_schedule(String localname, LocalDateTime start, int duration, String producerName,
 			String directorName, String technicianName, Array<String> collabsName, Production p, boolean silent) {
 		Array<User> collabs = new ArrayClass<>();
@@ -289,11 +290,13 @@ public class Main {
 				collabs.insertLast(p.getUser(collabName));
 			}
 
+			//add to collabs (as user type)
 			Producer producer = (Producer) p.getUser(producerName);
 			collabs.insertLast(producer);
 			collabs.insertLast(p.getUser(directorName));
 			collabs.insertLast(p.getUser(technicianName));
 
+			//add to collabs os users, director, producer and tech for chekings on the next levels because teh principals werent there
 			collabsName.insertLast(directorName);
 			collabsName.insertLast(producerName);
 			collabsName.insertLast(technicianName);
@@ -322,21 +325,22 @@ public class Main {
 
 						Iterator<Recording> it2 = p.getRecordings(start, duration);
 
-						// remove all conflicting recordings
+						// remove all conflicting recordings from productions 
 						while (it2.hasNext()) {
 							Recording rec = it2.next();
 
 							p.removeRecording(rec);
 						}
 
-						// add our recording
+						// add our recording, that one that has priority
 						p.addRecording(localname, collabs, start, duration);
 
-						// add all previously removed recordings
+						// add all previously removed recordings that were removed before (in the first place)
 						it2.init();
 						while (it2.hasNext()) {
 							Recording rec = it2.next();
-
+							
+							//convert array of users to user name strings 
 							Array<String> cNames = new ArrayClass<>();
 							Iterator<User> it3 = rec.getCollabs().iterator();
 							while (it3.hasNext()) {
@@ -347,6 +351,7 @@ public class Main {
 									cNames.insertLast(user.getName());
 							}
 
+							//recursive call to the method 
 							aux_schedule(rec.getLocal().getName(), rec.getStartDate().plusDays(1), rec.getDuration(),
 									rec.getProducer().getName(), rec.getDirector().getName(),
 									rec.getTechician().getName(), cNames, p, true);
