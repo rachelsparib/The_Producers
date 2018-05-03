@@ -382,7 +382,7 @@ public class Main {
 			System.out.println(starname + MessagesEnum.INVALID_STAR);
 		else {
 			if (p.hasUser(collabname) && !p.hasCollabInBlacklist(starname, collabname) || !p.hasUser(collabname))
-				System.out.println(MessagesEnum.NOT_IN_BLACKLIST + collabname);
+				System.out.println(MessagesEnum.NOT_IN_BLACKLIST + collabname +".");
 			else {
 				int num = p.removeCollabOfBlacklist(starname, collabname);
 				System.out.println(starname + " <3 " + collabname + ". " + num + " gravacoes salvas!");
